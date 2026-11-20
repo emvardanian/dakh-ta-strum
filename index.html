@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Дах та струм — 3 варіанти сайту</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--acc:#e5600f;--fg:#121417;--mut:#5d636c;--line:#e3e5e8;--soft:#f6f6f7}
+*{box-sizing:border-box;margin:0;padding:0;min-width:0}
+body{font-family:Inter,system-ui,sans-serif;color:var(--fg);background:#fff;line-height:1.55;overflow-x:clip}
+img{display:block;max-width:100%}a{color:inherit}
+.wrap{width:min(1120px,90vw);margin:0 auto}
+header{padding:56px 0 30px;border-bottom:1px solid var(--line)}
+.lg{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.06em}.lg svg{width:40px;height:30px}
+h1{font-size:clamp(30px,4.4vw,48px);font-weight:600;letter-spacing:-.025em;line-height:1.1;margin-top:26px}
+.sub{color:var(--mut);font-size:17px;margin-top:12px;max-width:680px}
+h2{font-size:clamp(24px,3vw,34px);font-weight:600;letter-spacing:-.02em;margin-bottom:22px}
+section{padding:60px 0;border-bottom:1px solid var(--line)}
+.vs{display:grid;gap:22px}
+.v{display:grid;grid-template-columns:1.5fr 1fr;gap:28px;align-items:center;border:1px solid var(--line);border-radius:22px;padding:18px;text-decoration:none;transition:border-color .3s,box-shadow .3s,transform .4s}
+.v:hover{border-color:var(--acc);box-shadow:0 30px 50px -36px rgba(0,0,0,.4);transform:translateY(-3px)}
+.v .pics{position:relative}
+.v .pics img:first-child{border-radius:14px;aspect-ratio:16/10;object-fit:cover;width:100%}
+.v .pics .m{position:absolute;right:14px;bottom:-14px;width:22%;border-radius:12px;border:3px solid #fff;box-shadow:0 10px 30px -10px rgba(0,0,0,.5)}
+.v small{font-weight:700;color:var(--acc);letter-spacing:.14em;text-transform:uppercase;font-size:12px}
+.v h3{font-size:26px;font-weight:600;letter-spacing:-.02em;margin-top:6px}
+.v p{color:var(--mut);margin-top:10px;font-size:15px}
+.v ul{margin:14px 0 0 18px;color:var(--mut);font-size:14px;display:grid;gap:4px}
+.v .go{display:inline-flex;align-items:center;min-height:46px;padding:0 20px;border-radius:999px;background:var(--acc);color:#fff;font-weight:600;margin-top:18px}
+.cols{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.box{background:var(--soft);border-radius:18px;padding:24px}
+.box h3{font-size:17px;font-weight:600;margin-bottom:10px}
+.box ul{margin-left:18px;display:grid;gap:6px;font-size:15px;color:#333}
+.map{display:grid;gap:10px}
+.mr{display:grid;grid-template-columns:1fr 1.3fr;gap:16px;padding:14px 0;border-bottom:1px solid var(--line);font-size:15px}
+.mr b{font-weight:600}.mr span{color:var(--mut)}
+.todo li{margin-bottom:8px}
+footer{padding:40px 0 60px;color:var(--mut);font-size:14px}
+@media(max-width:800px){.v,.cols,.mr{grid-template-columns:1fr}.v .pics .m{display:none}}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <div class="lg"><svg viewBox="0 0 64 48" aria-hidden="true"><path d="M4 46V24L27 5l10 8V7h6v11l4 3.3V46z" fill="#14315c"/><path d="M53 3 44 24h7l-5 21 15-27h-8l6-15z" fill="#e5600f"/></svg>ДАХ ТА СТРУМ</div>
+  <h1>Три варіанти сайту для обговорення</h1>
+  <p class="sub">Основа — phservs.com і варіант 3 з першого раунду. У шапці кожного варіанта — «рілс» з реальних фото об'єктів: повільний рух камери, плавні переходи і логотип у фіналі. Роботи видно одразу, без прихованих анімацій.</p>
+</div></header>
+
+<section><div class="wrap">
+  <h2>Варіанти</h2>
+  <div class="vs">
+    <a class="v" href="a/"><div class="pics"><img src="assets/prev-a.webp" alt="Варіант A — головний екран"><img class="m" src="assets/prev-a-m.webp" alt=""></div><div><small>Варіант A</small><h3>Класика phservs</h3><p>Найближчий до референсу: світлий, спокійний, преміальний. Темна кіно-шапка, легка типографіка, сітка послуг з фото.</p><ul><li>Смуга довіри одразу під шапкою</li><li>Блок «Знайомо?» — болі клієнта</li><li>«Від чого залежить ціна» — чесно, без цін</li></ul><span class="go">Відкрити варіант A →</span></div></a>
+    <a class="v" href="b/"><div class="pics"><img src="assets/prev-b.webp" alt="Варіант B — головний екран"><img class="m" src="assets/prev-b-m.webp" alt=""></div><div><small>Варіант B</small><h3>Графіт</h3><p>Розвиток варіанту 3, який сподобався: темний, технічний, яскравий помаранчевий. Індикатори рілса — як у сторіс.</p><ul><li>Форма «залиште номер» прямо в шапці</li><li>Роботи — перший блок після шапки</li><li>Блок «Для кого ми працюємо» — 4 типи клієнтів</li></ul><span class="go">Відкрити варіант B →</span></div></a>
+    <a class="v" href="c/"><div class="pics"><img src="assets/prev-c.webp" alt="Варіант C — головний екран"><img class="m" src="assets/prev-c-m.webp" alt=""></div><div><small>Варіант C</small><h3>Фірмовий синій</h3><p>У кольорах логотипа клієнта: темно-синій і помаранчевий. Найбільш «народний» і довірчий, кнопка заміру завжди в меню.</p><ul><li>Вкладки послуг з переліком робіт</li><li>Блок «Чому обирають нас»</li><li>Квіз-прорахунок на синьому фоні</li></ul><span class="go">Відкрити варіант C →</span></div></a>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <h2>Портрет клієнта</h2>
+  <div class="cols">
+    <div class="box"><h3>Хто він</h3><ul><li>Власник приватного будинку, 35–60 років, місто, передмістя або село</li><li>Будує новий дім, міняє старий шифер, усуває протікання або хоче оновити вигляд будинку</li><li>Рішення часто приймає сім'я разом: технічна сторона + вигляд і колір</li><li>Окремо — забудовники та бізнес (таунхауси, склади з профнастилу)</li></ul></div>
+    <div class="box"><h3>Чого боїться</h3><ul><li>Що ціна виросте вже під час робіт («а тут ще доплатити»)</li><li>Що дах протече після першої зливи</li><li>Що бригада візьме гроші й зникне або затягне терміни</li><li>Що доведеться шукати окремо покрівельників, фасадників і електриків</li><li>Помилитися з матеріалом і кольором</li></ul></div>
+    <div class="box"><h3>Як шукає і вирішує</h3><ul><li>З телефона, у вільну хвилину — сайт має бути зручним одним пальцем</li><li>Найперше дивиться реальні фото робіт</li><li>Віддає перевагу дзвінку або Viber/Telegram, а не довгим формам</li><li>Хоче зрозуміти порядок цін до того, як кликати когось додому</li></ul></div>
+    <div class="box"><h3>Що його переконує</h3><ul><li>Багато реальних об'єктів, схожих на його будинок</li><li>Безкоштовний виїзд і кошторис до початку робіт</li><li>Одна відповідальна команда на весь цикл</li><li>Зрозумілий процес і чесні відповіді на прості питання</li></ul></div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <h2>Як сайт відповідає на це</h2>
+  <div class="map">
+    <div class="mr"><b>«Покажіть, що ви вже зробили»</b><span>Портфоліо з 15 об'єктів і 47 фото, фільтр за типом робіт, галерея з гортанням пальцем. Кнопка «Дивитись об'єкт» прямо в шапці-рілсі.</span></div>
+    <div class="mr"><b>«Скільки це коштуватиме?»</b><span>Квіз на 4 питання → телефон. Чесний блок «від чого залежить ціна». Безкоштовний замір і кошторис до старту — на кожному екрані.</span></div>
+    <div class="mr"><b>«Не хочу шукати кілька бригад»</b><span>Повний цикл: покрівля, утеплення, підшива, водостік, фасад, навіси, паркани, електрика.</span></div>
+    <div class="mr"><b>«Який матеріал і колір обрати?»</b><span>Каталог: 23 позиції, характеристики, приміряння кольорів RAL на фото матеріалу. Кнопка «Прорахувати» з картки відразу переносить у квіз.</span></div>
+    <div class="mr"><b>«Мені зручніше подзвонити»</b><span>Нижня панель на телефоні: Дзвінок · Viber · Прорахунок. Номер у меню, шапці та футері.</span></div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <h2>Що уточнити в клієнта перед запуском</h2>
+  <ul class="todo" style="margin-left:20px;font-size:16px">
+    <li>Місто й регіон роботи — для заголовків і пошуку в Google</li>
+    <li>Чи прив'язані Viber і Telegram до 093 59 51 954</li>
+    <li>Перелік електромонтажних робіт (проводка, щити, освітлення, резервне живлення?)</li>
+    <li>Чи є власна гарантія на роботи — і скільки років</li>
+    <li>Підписи до об'єктів: матеріал, колір, населений пункт</li>
+    <li>Реальні відгуки клієнтів (з дозволу) — додамо блок відгуків</li>
+    <li>Куди надходять заявки: Telegram-бот, CRM чи email</li>
+  </ul>
+</div></section>
+<footer><div class="wrap">Прототип для обговорення. Усі фото — реальні об'єкти «Дах та струм».</div></footer>
+</body>
+</html>
