@@ -56,7 +56,7 @@ h1,h2,h3{font-family:var(--font-h);font-weight:500;letter-spacing:-.02em}
 .ln{display:block;overflow:hidden;padding-bottom:.06em}.ln>span{display:block;transform:translateY(110%);animation:up 1.2s var(--ease) forwards}
 .ln:nth-child(2)>span{animation-delay:.1s}.ln:nth-child(3)>span{animation-delay:.2s}
 @keyframes up{to{transform:none}}
-.hero p{color:#c9d0da;font-size:18px;max-width:540px;margin-top:22px}
+.hero .rw{font-family:Unbounded;font-size:clamp(18px,1.8vw,24px);margin-top:20px}.hero p{color:#c9d0da;font-size:18px;max-width:540px;margin-top:22px}
 .fd{opacity:0;animation:fd 1s .55s var(--ease) forwards}@keyframes fd{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
 .hero .acts{display:flex;gap:12px;flex-wrap:wrap;margin-top:30px}
 .qc{background:rgba(14,17,22,.62);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid var(--line);border-radius:24px;padding:26px;animation-delay:.8s}
@@ -166,6 +166,7 @@ footer a:hover{color:var(--acc)}
     <div>
       <span class="tag fd">Безкоштовний замір і прорахунок</span>
       <h1><span class="ln"><span>Покрівля.</span></span><span class="ln"><span>Фасад.</span></span><span class="ln"><span><em>Струм.</em></span></span></h1>
+      <div class="rw fd">Робимо під ключ: <span data-rotate="покрівлю|фасади|навіси|паркани|електрику"></span></div>
       <p class="fd">Повний цикл під ключ: від демонтажу старого даху та утеплення до нової покрівлі, фасаду, навісу, паркану й електрики. Герметично. Довговічно. Однією командою.</p>
       <div class="acts fd"><a class="btn btn-a" href="#roboty">Наші роботи →</a><a class="btn btn-l" data-tel href="tel:+380935951954">093 59 51 954</a></div>
     </div>
@@ -182,7 +183,7 @@ footer a:hover{color:var(--acc)}
 
 <section class="sec" id="roboty">
   <div class="wrap">
-    <div class="sh"><div><div class="k rv">Спершу — результат</div><h2 class="h2 rv d1">Наші об'єкти</h2></div><p class="rv d2">Реальні будинки, які ми накрили й оздобили. Відкрийте будь-який об'єкт — там усі фото.</p></div>
+    <div class="sh"><div><div class="k rv">Спершу — результат</div><h2 class="h2 rv d1">Наші <span class="uline">об'єкти</span></h2></div><p class="rv d2">Реальні будинки, які ми накрили й оздобили. Відкрийте будь-який об'єкт — там усі фото.</p></div>
     <div data-works data-feature></div>
   </div>
 </section>
@@ -234,7 +235,7 @@ footer a:hover{color:var(--acc)}
 
 <section class="sec" id="zayavka" style="padding-top:20px">
   <div class="wrap">
-    <div class="qbox">
+    <div class="qbox" data-paths>
       <div class="side"><div class="k rv">Прорахунок за 1 хвилину</div><h2 class="rv d1" style="margin-top:16px">Скільки коштуватиме ваш об'єкт?</h2><p class="rv d2">4 короткі питання — і ми зателефонуємо з попереднім розрахунком та домовимося про безкоштовний замір.</p><a class="ph rv d3" data-tel href="tel:+380935951954">093 59 51 954</a></div>
       <div class="qz rv d2" data-quiz></div>
     </div>
@@ -252,7 +253,7 @@ footer a:hover{color:var(--acc)}
   </div>
 </section>
 
-<section class="cta">
+<section class="cta" data-paths>
   <img src="../assets/w/42.webp" alt="" loading="lazy">
   <div class="k rv">Готові почати?</div>
   <h2 class="rv d1" style="margin-top:18px">Безкоштовний прорахунок<br>і заміри — <em>вже сьогодні</em></h2>

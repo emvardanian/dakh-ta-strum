@@ -20,7 +20,7 @@ h1,h2,h3{font-family:Montserrat,sans-serif;letter-spacing:-.015em}
 .sec{padding:110px 0}.soft{background:var(--soft)}
 .ey{display:inline-block;font:700 12px/1 Montserrat;letter-spacing:.18em;text-transform:uppercase;color:var(--acc);padding:8px 12px;border-radius:6px;background:rgba(242,107,29,.1)}
 .h2{font-size:clamp(30px,4vw,50px);font-weight:800;line-height:1.08;margin-top:16px;text-wrap:balance}
-.h2 span{color:var(--acc)}
+.h2>span:not(.sp-w){color:var(--acc)}
 .lead{color:var(--mut);font-size:17px;max-width:600px;margin-top:14px}
 .ctr{text-align:center}.ctr .lead{margin-inline:auto}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:54px;padding:0 28px;border-radius:12px;font:700 15px Montserrat;transition:transform .3s var(--ease),box-shadow .3s,background .3s,color .3s;border:0;cursor:pointer}
@@ -49,6 +49,7 @@ h1,h2,h3{font-family:Montserrat,sans-serif;letter-spacing:-.015em}
 .hero{position:relative;height:100svh;min-height:660px;color:#fff;overflow:hidden;display:flex;align-items:center;text-align:center}
 .hero::after{content:"";position:absolute;inset:0;z-index:1;background:radial-gradient(80% 70% at 50% 45%,rgba(13,33,64,.55),rgba(13,33,64,.15) 70%),linear-gradient(180deg,rgba(13,33,64,.55),rgba(13,33,64,0) 30%,rgba(13,33,64,.1) 60%,rgba(13,33,64,.85))}
 .hero .in{position:relative;z-index:3;width:100%}
+.hero .kk{font:700 clamp(14px,1.4vw,18px) Montserrat;letter-spacing:.14em;text-transform:uppercase;margin-bottom:18px}.hero .fd{opacity:0;animation:fd 1s .1s var(--ease) forwards}
 .hero h1{font-size:clamp(38px,6.6vw,90px);font-weight:800;line-height:1;letter-spacing:-.03em}
 .hero h1 .o{color:var(--acc)}
 .w{display:inline-block;opacity:0;transform:translateY(40px) rotate(2deg);animation:wIn 1s var(--ease) forwards}
@@ -162,6 +163,7 @@ footer .cp{grid-column:1/-1;border-top:1px solid rgba(255,255,255,.1);padding-to
 <section class="hero">
   <div class="reel" data-hero-video data-intro="curtain"></div>
   <div class="in wrap" data-hero-content>
+    <div class="kk fd">Під ключ: <span data-rotate="покрівля|фасади|навіси|паркани|електромонтаж"></span></div>
     <h1><span class="w" style="animation-delay:.05s">Надійний</span> <span class="w" style="animation-delay:.15s">дах.</span><br><span class="w o" style="animation-delay:.3s">Світло</span> <span class="w o" style="animation-delay:.4s">в</span> <span class="w o" style="animation-delay:.5s">домі.</span></h1>
     <p>Покрівля, фасади, металоконструкції та електромонтаж під ключ — від демонтажу старого даху до професійної електрифікації. Виїзд, замір і прорахунок безкоштовно.</p>
     <div class="acts"><a class="btn btn-a" href="#zayavka">Розрахувати вартість</a><a class="btn btn-g" href="#roboty">Наші роботи</a></div>
@@ -246,7 +248,7 @@ footer .cp{grid-column:1/-1;border-top:1px solid rgba(255,255,255,.1);padding-to
 
 <section class="sec" id="zayavka" style="padding-top:0">
   <div class="wrap">
-    <div class="qn">
+    <div class="qn" data-paths>
       <div><span class="ey rv">Безкоштовно</span><h2 class="h2 rv d1">Розрахуйте вартість <span>за 1 хвилину</span></h2><p class="lead rv d2">Відповідайте на 4 питання — і ми зателефонуємо з попереднім розрахунком та домовимося про замір.</p><a class="ph rv d3" data-tel href="tel:+380935951954">093 59 51 954</a></div>
       <div class="qz rv d2" data-quiz></div>
     </div>

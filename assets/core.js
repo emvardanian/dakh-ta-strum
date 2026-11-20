@@ -51,6 +51,19 @@
   '.hv-ko text{font-family:var(--font-h,sans-serif);font-weight:700;letter-spacing:-4px}' +
   'html:not(.hv-ready) .hero .ln>span,html:not(.hv-ready) .hero .fd,html:not(.hv-ready) .hero .w,html:not(.hv-ready) .hero p,html:not(.hv-ready) .hero .acts{animation-play-state:paused!important}' +
   '.reel-bars i b{transition:none}[data-reel-bars],.hbot{transition:opacity .8s}html:not(.hv-ready) [data-reel-bars],html:not(.hv-ready) .hbot{opacity:0}' +
+
+  /* fx kit */
+  '.sp-w{display:inline-block;white-space:nowrap}.sp-w>span{display:inline-block;opacity:0;transform:translateY(.45em);filter:blur(10px);transition:opacity .8s cubic-bezier(.2,.7,.1,1),transform .8s cubic-bezier(.2,.7,.1,1),filter .8s cubic-bezier(.2,.7,.1,1);transition-delay:calc(var(--i)*55ms)}' +
+  '.split.on .sp-w>span{opacity:1;transform:none;filter:none}.split.rv{opacity:1!important;transform:none!important}' +
+  '.rot{display:inline-grid;vertical-align:bottom;overflow:hidden;color:var(--acc);perspective:600px}.rot>span{grid-area:1/1;text-align:left;transform-origin:50% 100%;transition:transform .7s cubic-bezier(.2,.8,.2,1),opacity .5s}' +
+  '.rot>span.in{transform:none;opacity:1}.rot>span.up{transform:translateY(-100%) rotateX(70deg);opacity:0}.rot>span.dn{transform:translateY(100%) rotateX(-70deg);opacity:0}' +
+  '.shim{position:relative;overflow:hidden;isolation:isolate}.shim::after{content:"";position:absolute;top:0;bottom:0;left:-60%;width:45%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.55),transparent);transform:skewX(-20deg);animation:shim 3.6s ease-in-out infinite;pointer-events:none;z-index:2}' +
+  '@keyframes shim{0%,55%{left:-60%}85%,100%{left:130%}}' +
+  '.spot-h{position:relative;overflow:hidden}.spot{position:absolute;inset:0;z-index:3;pointer-events:none;opacity:0;transition:opacity .4s;background:radial-gradient(420px circle at var(--mx,50%) var(--my,50%),var(--spot,rgba(255,255,255,.16)),transparent 45%)}.spot-h:hover .spot{opacity:1}' +
+  '.tilt{transition:transform .5s cubic-bezier(.2,.7,.1,1)!important;transform-style:preserve-3d;will-change:transform}' +
+  '[data-paths]>:not(.paths):not(img){position:relative;z-index:1}.paths{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden}.paths svg{width:100%;height:100%}.paths path{fill:none;stroke:var(--paths,rgba(255,138,61,.35));stroke-dasharray:var(--l) var(--l);animation:pth var(--d) linear infinite}' +
+  '@keyframes pth{from{stroke-dashoffset:calc(var(--l)*2)}to{stroke-dashoffset:0}}' +
+  '.uline{position:relative;display:inline-block}.uline::after{content:"";position:absolute;left:0;bottom:-.08em;height:.09em;width:100%;background:var(--acc);border-radius:2px;transform:scaleX(0);transform-origin:left;transition:transform 1.1s cubic-bezier(.2,.8,.2,1) .5s}.on .uline::after,.uline.on::after{transform:scaleX(1)}' +
   /* reveal */
   '.rv{opacity:0;transform:translateY(36px);transition:opacity .9s cubic-bezier(.2,.7,.1,1),transform .9s cubic-bezier(.2,.7,.1,1)}.rv.on{opacity:1;transform:none}' +
   '.rv.d1{transition-delay:.08s}.rv.d2{transition-delay:.16s}.rv.d3{transition-delay:.24s}.rv.d4{transition-delay:.32s}' +
@@ -396,7 +409,71 @@
     go(0);
   }
 
-  function init() { initChrome(); if (!initHeroVideo()) initReel(); initWorks(); initCatalog(); initQuiz(); watch(); }
+
+  /* ---------- FX: анімації тексту й елементів ---------- */
+  function splitWords(el) {
+    var i = 0;
+    (function walk(node) {
+      Array.prototype.slice.call(node.childNodes).forEach(function (n) {
+        if (n.nodeType === 3) {
+          var parts = n.textContent.split(/(\s+)/), frag = document.createDocumentFragment();
+          parts.forEach(function (p) {
+            if (!p) return;
+            if (/^\s+$/.test(p)) { frag.appendChild(document.createTextNode(' ')); return; }
+            var w = document.createElement('span'); w.className = 'sp-w';
+            var inner = document.createElement('span'); inner.style.setProperty('--i', i++); inner.textContent = p;
+            w.appendChild(inner); frag.appendChild(w);
+          });
+          n.parentNode.replaceChild(frag, n);
+        } else if (n.nodeType === 1 && n.tagName !== 'BR') walk(n);
+      });
+    })(el);
+    el.classList.add('split');
+  }
+  function initFx() {
+    // 1. заголовки: слово за словом з розмиттям
+    $$('main h2, [data-split]').forEach(function (h) { if (!h.closest('.hero') && !h.closest('.lbx')) { splitWords(h); io.observe(h); } });
+    // 2. слово, що змінюється
+    $$('[data-rotate]').forEach(function (el) {
+      var words = el.dataset.rotate.split('|'), k = 0;
+      el.classList.add('rot'); el.innerHTML = words.map(function (w, j) { return '<span class="' + (j ? 'dn' : 'in') + '">' + esc(w) + '</span>'; }).join('');
+      var sp = $$('span', el);
+      if (!reduce) setInterval(function () { sp[k].className = 'up'; var p = k; k = (k + 1) % sp.length; sp[k].className = 'dn'; void sp[k].offsetWidth; sp[k].className = 'in'; setTimeout(function () { sp[p].className = 'dn'; }, 700); }, 2300);
+    });
+    // 3. відблиск на головних кнопках
+    $$('.btn-a, .btn-acc, .qz-go, .ctd-go, .lbx-cta').forEach(function (b) { b.classList.add('shim'); });
+    if (reduce) return;
+    var fine = matchMedia('(pointer:fine)').matches;
+    // 4. прожектор за курсором + 3D-нахил
+    function spot(sel, tilt) {
+      document.addEventListener('mousemove', function (e) {
+        var c = e.target.closest && e.target.closest(sel); if (!c) return;
+        if (!c._spot) { c.classList.add('spot-h'); var s = document.createElement('span'); s.className = 'spot'; c.appendChild(s); c._spot = 1; if (tilt) c.classList.add('tilt'); }
+        var r = c.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top;
+        c.style.setProperty('--mx', x + 'px'); c.style.setProperty('--my', y + 'px');
+        if (tilt) c.style.transform = 'perspective(900px) rotateX(' + ((.5 - y / r.height) * 7) + 'deg) rotateY(' + ((x / r.width - .5) * 9) + 'deg) translateY(-4px)';
+      });
+      document.addEventListener('mouseout', function (e) { var c = e.target.closest && e.target.closest(sel); if (c && tilt && !c.contains(e.relatedTarget)) c.style.transform = ''; });
+    }
+    if (fine) { spot('.wk-card', true); spot('.ct-card, .sv, .sg, .wy, .pn, .sx, .st, .ts, .qcard, .qbox, .qn, .tr, .rb, .sr', false); }
+    // 5. магнітні кнопки
+    if (fine) $$('.btn').forEach(function (b) {
+      b.addEventListener('mousemove', function (e) { var r = b.getBoundingClientRect(); b.style.translate = ((e.clientX - r.left - r.width / 2) * .16) + 'px ' + ((e.clientY - r.top - r.height / 2) * .28) + 'px'; });
+      b.addEventListener('mouseleave', function () { b.style.translate = ''; });
+    });
+    // 6. анімовані лінії на темних блоках
+    $$('[data-paths]').forEach(function (host) {
+      var W = 1200, H = 600, n = 22, h = '<svg viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="xMidYMid slice" aria-hidden="true">';
+      for (var j = 0; j < n; j++) {
+        var o = j * 16, y0 = 80 + j * 18, d = 'M' + (-200 + o) + ' ' + (y0 + 260) + ' C ' + (200 + o) + ' ' + (y0 - 120) + ', ' + (600 + o) + ' ' + (y0 + 380) + ', ' + (1400 + o) + ' ' + (y0 - 60);
+        h += '<path d="' + d + '" style="--l:1800;--d:' + (14 + (j % 7) * 2.2) + 's;stroke-width:' + (0.6 + (j % 5) * 0.35) + ';opacity:' + (0.25 + (j % 4) * 0.18) + '"/>';
+      }
+      var p = document.createElement('div'); p.className = 'paths'; p.innerHTML = h + '</svg>';
+      host.insertBefore(p, host.firstChild); if (getComputedStyle(host).position === 'static') host.style.position = 'relative';
+    });
+  }
+
+  function init() { initChrome(); if (!initHeroVideo()) initReel(); initWorks(); initCatalog(); initQuiz(); initFx(); watch(); }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
   window.DTS = { openLb: openLb, watch: watch, send: send };
 })();
