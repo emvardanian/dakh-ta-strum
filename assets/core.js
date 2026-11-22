@@ -431,6 +431,7 @@
     el.classList.add('split');
   }
   function initFx() {
+    if (document.body.hasAttribute('data-ph')) return;
     // 1. заголовки: слово за словом з розмиттям
     $$('main h2, [data-split]').forEach(function (h) { if (!h.closest('.hero') && !h.closest('.lbx')) { splitWords(h); io.observe(h); } });
     // 2. слово, що змінюється
