@@ -395,3 +395,16 @@ html[data-theme=light] .menu .x{color:#111}
 html[data-theme=light] .hero.kino::before,html[data-theme=light] .hero.dim::before{content:"";position:absolute;inset:0 0 auto;height:140px;z-index:2;pointer-events:none;background:linear-gradient(180deg,rgba(247,246,243,.9),rgba(247,246,243,0))}
 html:not([data-theme=light]) .hero.kino::before,html:not([data-theme=light]) .hero.dim::before{content:"";position:absolute;inset:0 0 auto;height:140px;z-index:2;pointer-events:none;background:linear-gradient(180deg,rgba(13,16,21,.7),rgba(13,16,21,0))}
 .cg figure:nth-child(1) figcaption{left:auto;right:14px}
+
+/* правки: стрілка, контурні цифри, нумерація довіри */
+.btn svg.arr{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.btn-a{color:#111}.btn-a svg.arr{stroke:currentColor}
+.st .n{color:var(--acc);-webkit-text-stroke:0;font-weight:500;font-size:64px;opacity:.95}
+html[data-theme=light] .st .n{-webkit-text-stroke:0}
+.tc .th2{display:flex;align-items:center;gap:12px;position:relative;z-index:1}
+.tc .no{position:static;display:grid;place-items:center;height:34px;padding:0 12px;border-radius:999px;font-size:13px;font-weight:500;line-height:1;color:var(--acc);-webkit-text-stroke:0;background:var(--bg);border:1.5px solid var(--line);transition:border-color .6s}
+.p1 .tc .no{background:var(--p1)}
+html[data-theme=light] .tc .no{-webkit-text-stroke:0}
+.trust.on .tc .no{border-color:rgba(255,122,26,.5)}
+.trust .rail{top:47px}
+.tc .no{height:40px;padding:0 14px;font-size:15px}

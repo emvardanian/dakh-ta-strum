@@ -130,7 +130,7 @@
       if (g.length) h += '<h4>Палітра — натисніть, щоб приміряти</h4>' + g.map(function (gr) { return '<div class="grp">' + esc(gr) + '</div><div class="ral">' + p.colors[gr].map(function (c) { return '<button style="background:' + swatch(c) + ';animation-delay:' + (k++) * 25 + 'ms" data-n="' + esc(gr + ' · ' + c) + '" data-c="' + esc(c) + '" aria-label="' + esc(gr + ': ' + c) + '"></button>'; }).join('') + '</div>'; }).join('') + '<div class="rn">Оберіть колір</div>';
       if (p.adv.length) h += '<h4>Переваги</h4><ol class="adv">' + p.adv.map(function (a) { return '<li>' + esc(a) + '</li>'; }).join('') + '</ol>';
       if (p.items.length) h += '<h4>Елементи</h4><div class="els">' + p.items.map(function (a) { return '<span>' + esc(a) + '</span>'; }).join('') + '</div>';
-      h += '<a class="btn btn-a" href="#zayavka">Прорахувати з монтажем <span class="arr">→</span></a></div>';
+      h += '<a class="btn btn-a" href="#zayavka">Прорахувати з монтажем <svg class="arr" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 10h13M11 5l5 5-5 5"/></svg></a></div>';
       drw.innerHTML = h; drw.scrollTop = 0; drw.setAttribute('aria-label', p.name);
       $('.x', drw).onclick = close; $('.btn', drw).onclick = function () { close(); var q = $('[data-quiz]'); if (q && q._pick) q._pick(p); };
       $$('.ral button', drw).forEach(function (b) { var s = function () { $$('.ral button', drw).forEach(function (x) { x.classList.remove('sel'); }); b.classList.add('sel'); $('.rn', drw).textContent = b.dataset.n; var t = $('.tint', drw); t.style.background = swatch(b.dataset.c); t.style.opacity = .8; }; b.onclick = s; b.onmouseenter = s; });
