@@ -375,7 +375,7 @@
   function initQuiz() {
     var host = $('[data-quiz]'); if (!host) return;
     var Q = [
-      { k: 'service', q: 'Що потрібно зробити?', o: ['Покрівля', 'Фасад', 'Паркан або навіс', 'Електромонтаж', 'Кілька робіт разом'] },
+      { k: 'service', q: 'Що потрібно зробити?', o: ['Покрівля', 'Фасади', 'Паркани та навіси', 'Електрика', 'Кілька напрямів'] },
       { k: 'state', q: 'Яка зараз ситуація?', o: ['Новий будинок — даху ще немає', 'Заміна старого покриття (шифер тощо)', 'Протікає — потрібен ремонт', 'Ще не знаю — потрібна порада'] },
       { k: 'size', q: 'Приблизний розмір об\'єкта', o: ['Невеликий (до 100 м²)', 'Середній (100–200 м²)', 'Великий (понад 200 м²)', 'Не знаю — заміряєте'] },
       { k: 'when', q: 'Коли плануєте роботи?', o: ['Якнайшвидше', 'Протягом 1–2 місяців', 'Цього сезону', 'Поки що прицінююсь'] }
@@ -404,8 +404,8 @@
       $('.qz-sum', host).textContent = [d.service, d.state, d.size, d.when].filter(Boolean).join(' · ') + '. Зв\'яжемося з вами (' + d.via.toLowerCase() + ') на номер ' + d.phone + ' і домовимося про безкоштовний замір.';
       go('done'); f.reset();
     });
-    host._pick = function (p) { A.service = p.cat === 'facade' ? 'Фасад' : (p.cat === 'fence' ? 'Паркан або навіс' : 'Покрівля'); A.material = p.name; go(1); };
-    $$('[data-quiz-pick]').forEach(function (a) { a.addEventListener('click', function () { A.service = a.dataset.quizPick; go(1); }); });
+    host._pick = function (p) { A.service = p.cat === 'facade' ? 'Фасади' : (p.cat === 'fence' ? 'Паркани та навіси' : 'Покрівля'); A.material = p.name; go(1); };
+    document.addEventListener('click', function (e) { var a = e.target.closest && e.target.closest('[data-quiz-pick]'); if (a) { A.service = a.dataset.quizPick; go(1); } });
     go(0);
   }
 
