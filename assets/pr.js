@@ -102,23 +102,54 @@
   /* ---------- каталог: список + бічна панель (як у варіанті 3) ---------- */
   function catalog() {
     var host = $('[data-clist]'); if (!host || !window.CATALOG) return;
-    host.innerHTML = '<div class="chips" role="tablist"></div><div class="list"></div>';
-    var chips = $('.chips', host), list = $('.list', host);
-    CATS.forEach(function (c) {
-      var n = CATALOG.filter(function (p) { return p.cat === c.id; }).length;
-      var b = document.createElement('button'); b.className = 'chip'; b.dataset.id = c.id; b.setAttribute('role', 'tab'); b.innerHTML = esc(c.name) + '<sup>' + n + '</sup>'; b.onclick = function () { set(c.id); }; chips.appendChild(b);
+    /* три великі напрями; усе, що стосується даху, — в одній «Покрівлі» з підрозділами */
+    var GROUPS = [
+      { id: 'roof', name: 'Покрівля', cats: ['roof', 'prof', 'drain', 'parts'] },
+      { id: 'facade', name: 'Фасади', cats: ['facade'] },
+      { id: 'fence', name: 'Паркани', cats: ['fence'] }
+    ];
+    host.innerHTML = '<div class="gtabs" role="tablist"><span class="gind"></span></div><div class="subw"><div class="subs"></div></div><div class="list"></div>';
+    var gt = $('.gtabs', host), ind = $('.gind', gt), subw = $('.subw', host), subs = $('.subs', host), list = $('.list', host), G = GROUPS[0], sub = 'all';
+    var catName = function (id) { return CATS.filter(function (c) { return c.id === id; })[0].name; };
+    var inG = function (g) { return CATALOG.filter(function (p) { return g.cats.indexOf(p.cat) > -1; }); };
+    GROUPS.forEach(function (g) {
+      var b = document.createElement('button'); b.className = 'gt'; b.dataset.id = g.id; b.setAttribute('role', 'tab');
+      b.innerHTML = '<b>' + esc(g.name) + '</b><sup>' + inG(g).length + '</sup>'; b.onclick = function () { setG(g); }; gt.appendChild(b);
     });
-    function set(id) {
-      $$('.chip', chips).forEach(function (c) { c.classList.toggle('act', c.dataset.id === id); c.setAttribute('aria-selected', c.dataset.id === id); });
-      list.innerHTML = '';
-      CATALOG.filter(function (p) { return p.cat === id; }).forEach(function (p, i) {
-        var b = document.createElement('button'); b.className = 'item'; b.style.animationDelay = i * 60 + 'ms';
-        var sp = p.specs.slice(0, 3).map(function (s) { return '<span>' + esc(s[0]) + '<b>' + esc(s[1]) + '</b></span>'; }).join('') || '<span>Елементів<b>' + (p.items.length || '—') + '</b></span>';
-        b.innerHTML = '<span class="th"><img src="' + BASE + 'p/' + p.id + '.webp" alt="' + esc(p.name) + '" loading="lazy"></span><span><small>' + esc(CATS.filter(function (c) { return c.id === p.cat; })[0].name) + '</small><h3>' + esc(p.name) + '</h3></span><span class="sp">' + sp + '</span><span class="ar" aria-hidden="true">→</span>';
-        b.onclick = function () { openD(p); }; list.appendChild(b);
-      });
+    function moveInd() { var a = $('.gt.act', gt); if (!a) return; ind.style.width = a.offsetWidth + 'px'; ind.style.transform = 'translateX(' + a.offsetLeft + 'px)'; }
+    addEventListener('resize', moveInd);
+    function setG(g) {
+      G = g; sub = 'all';
+      $$('.gt', gt).forEach(function (b) { var on = b.dataset.id === g.id; b.classList.toggle('act', on); b.setAttribute('aria-selected', on); });
+      moveInd();
+      if (g.cats.length > 1) {
+        subs.innerHTML = '';
+        [{ id: 'all', name: 'Усе для даху' }].concat(g.cats.map(function (c) { return { id: c, name: catName(c) }; })).forEach(function (c, i) {
+          var n = c.id === 'all' ? inG(g).length : CATALOG.filter(function (p) { return p.cat === c.id; }).length;
+          var b = document.createElement('button'); b.className = 'chip'; b.dataset.id = c.id; b.style.animationDelay = (120 + i * 70) + 'ms';
+          b.innerHTML = esc(c.name) + '<sup>' + n + '</sup>'; b.onclick = function () { setS(c.id); }; subs.appendChild(b);
+        });
+        subw.classList.add('open');
+      } else subw.classList.remove('open');
+      setS('all');
     }
-    set('roof');
+    function setS(id) {
+      sub = id;
+      $$('.chip', subs).forEach(function (c) { c.classList.toggle('act', c.dataset.id === id); });
+      var items = inG(G).filter(function (p) { return id === 'all' || p.cat === id; });
+      var old = $$('.item', list);
+      old.forEach(function (o, i) { o.style.animation = 'none'; o.style.transitionDelay = (i * 25) + 'ms'; o.classList.add('out'); });
+      setTimeout(function () {
+        list.innerHTML = '';
+        items.forEach(function (p, i) {
+          var b = document.createElement('button'); b.className = 'item'; b.style.animationDelay = i * 60 + 'ms';
+          var sp = p.specs.slice(0, 3).map(function (s) { return '<span>' + esc(s[0]) + '<b>' + esc(s[1]) + '</b></span>'; }).join('') || '<span>Елементів<b>' + (p.items.length || '—') + '</b></span>';
+          b.innerHTML = '<span class="th"><img src="' + BASE + 'p/' + p.id + '.webp" alt="' + esc(p.name) + '" loading="lazy"></span><span><small>' + esc(catName(p.cat)) + '</small><h3>' + esc(p.name) + '</h3></span><span class="sp">' + sp + '</span><span class="ar" aria-hidden="true">→</span>';
+          b.onclick = function () { openD(p); }; list.appendChild(b);
+        });
+      }, old.length ? 320 : 0);
+    }
+    setG(GROUPS[0]); setTimeout(moveInd, 600);
     var drw = document.createElement('aside'), dbg = document.createElement('div');
     drw.className = 'drw'; drw.setAttribute('role', 'dialog'); drw.setAttribute('aria-modal', 'true'); dbg.className = 'dbg';
     document.body.appendChild(dbg); document.body.appendChild(drw);
@@ -149,20 +180,23 @@
     addEventListener('mousemove', function (e) { x = e.clientX; y = e.clientY; c.classList.toggle('on', !!(e.target.closest && e.target.closest('.wkc'))); });
     (function f() { cx += (x - cx) * .2; cy += (y - cy) * .2; c.style.translate = cx + 'px ' + cy + 'px'; requestAnimationFrame(f); })();
   }
+  /* роботи — ті самі великі напрями: навіси й гаражі йдуть разом із парканами */
+  var WG = [{ id: 'all', name: 'Усі роботи', t: [] }, { id: 'roof', name: 'Покрівля', t: ['roof'] }, { id: 'facade', name: 'Фасади', t: ['facade'] }, { id: 'fence', name: 'Паркани та навіси', t: ['fence', 'metal'] }];
+  var gOf = function (w) { for (var i = 1; i < WG.length; i++) if (WG[i].t.indexOf(w.tags[0]) > -1) return WG[i]; return WG[1]; };
   function card(w, i) {
-    var tag = WORK_CATS.filter(function (c) { return c.id === w.tags[0]; })[0].name;
+    var tag = gOf(w).name;
     return '<button class="wkc" data-w="' + w.id + '" style="--i:' + i + '"><img src="' + T(w.photos[0]) + '" alt="' + esc(w.title) + '" loading="lazy"><span class="c">' + w.photos.length + ' фото</span><span class="vt">' + esc(w.title) + '</span><span class="m"><small>' + tag + '</small><h3>' + esc(w.title) + '</h3></span></button>';
   }
   function chips(host, onSet) {
     var f = document.createElement('div'); f.className = 'wk-f'; f.setAttribute('role', 'tablist');
-    WORK_CATS.forEach(function (c) {
-      var n = c.id === 'all' ? WORKS.length : WORKS.filter(function (w) { return w.tags.indexOf(c.id) > -1; }).length;
+    WG.forEach(function (c) {
+      var n = pick(c.id).length;
       var b = document.createElement('button'); b.className = 'chip'; b.dataset.id = c.id; b.setAttribute('role', 'tab'); b.innerHTML = esc(c.name) + '<sup>' + n + '</sup>';
       b.onclick = function () { $$('.chip', f).forEach(function (x) { x.classList.toggle('act', x === b); x.setAttribute('aria-selected', x === b); }); onSet(c.id); }; f.appendChild(b);
     });
     host.appendChild(f); $('.chip', f).classList.add('act');
   }
-  var pick = function (id) { return WORKS.filter(function (w) { return id === 'all' || w.tags.indexOf(id) > -1; }); };
+  var pick = function (id) { var g = WG.filter(function (x) { return x.id === id; })[0]; return WORKS.filter(function (w) { return id === 'all' || w.tags.some(function (t) { return g.t.indexOf(t) > -1; }); }); };
   var open = function (id) { var w = WORKS.filter(function (x) { return x.id === id; })[0]; if (w && window.DTS) DTS.openLb(w, 0); };
 
   /* роботи 1: мозаїка, кожна картка відкривається шторкою */
