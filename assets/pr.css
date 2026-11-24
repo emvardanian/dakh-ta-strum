@@ -563,3 +563,17 @@ html[data-theme=light] body:has(.hero.kino, .hero.dim) .nav:not(.solid){color:#f
 html[data-theme=light] body:has(.hero.kino, .hero.dim) .nav:not(.solid) .logo,html[data-theme=light] body:has(.hero.kino, .hero.dim) .nav:not(.solid) .logo small{color:#fff}
 html[data-theme=light] body:has(.hero.kino, .hero.dim) .nav:not(.solid) .thm{border-color:rgba(255,255,255,.35)}
 html[data-theme=light] body:has(.hero.kino, .hero.dim) .nav:not(.solid) .burger span{background:#fff}
+
+/* відгуки */
+.rvs2{grid-template-columns:1fr 1fr;align-items:start}
+.rvs2 .rvw{margin:0;min-height:0;padding:36px;gap:18px;position:relative;overflow:hidden}
+.rvs2 .rvw .q{font-size:72px;line-height:.6;transform:translateY(20px) scale(.6);opacity:0;transition:all 1s cubic-bezier(.34,1.56,.64,1) .3s}
+.rvs2 .rvw.on .q{transform:none;opacity:1}
+.rvs2 blockquote{margin:0;display:grid;gap:12px}
+.rvs2 blockquote p{font-size:17px;line-height:1.65;color:var(--fg)}
+.rvs2 .who{margin-top:6px}
+.rvs2 .av{display:grid;place-items:center;font-family:Unbounded;font-weight:500;font-size:16px;background:var(--acc);color:#111}
+.rvs2 .rvw::after{content:"";position:absolute;left:0;top:0;height:3px;width:100%;background:var(--acc);transform:scaleX(0);transform-origin:left;transition:transform 1.4s var(--ease) .2s}
+.rvs2 .rvw.on::after{transform:scaleX(1)}
+@media(max-width:900px){.rvs2{grid-template-columns:1fr}.rvs2 .rvw{padding:26px}.rvs2 blockquote p{font-size:16px}}
+.rvs2{align-items:stretch}.rvs2 .who{margin-top:auto}
