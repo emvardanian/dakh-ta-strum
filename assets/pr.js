@@ -227,7 +227,7 @@
     function words(n) { var m = n % 10, h = n % 100; return n + ' ' + (m === 1 && h !== 11 ? "об'єкт" : (m >= 2 && m <= 4 && (h < 12 || h > 14) ? "об'єкти" : "об'єктів")); }
     function html(id) {
       if (id !== 'all') { var l = pick(id); return '<div class="wgrid">' + (l.length ? l.map(wc).join('') : EMP) + '</div>'; }
-      return WG.slice(1).map(function (g, i) {
+      return WG.slice(1).filter(function (g) { return pick(g.id).length; }).map(function (g, i) {
         var l = WORKS.filter(function (w) { return gOf(w).id === g.id; }), more = pick(g.id).length;
         return '<div class="wgrp"><div class="wh"><span class="no">0' + (i + 1) + '</span><h3>' + esc(g.name) + '</h3><span class="cnt">' + (more ? words(more) : 'фото скоро') + '</span>' +
           (more > 4 ? '<button class="more" data-g="' + g.id + '">Усі ' + more + ' →</button>' : '') + '</div><div class="wgrid">' + (l.length ? l.slice(0, 4).map(wc).join('') : EMP) + '</div></div>';
@@ -255,7 +255,7 @@
       }, had ? 350 : 0);
     }
     WG.forEach(function (c) {
-      var n = pick(c.id).length;
+      var n = pick(c.id).length; if (c.id !== 'all' && !n) return;
       var b = document.createElement('button'); b.className = 'chip'; b.dataset.id = c.id; b.setAttribute('role', 'tab');
       b.innerHTML = esc(c.name) + (n ? '<sup>' + n + '</sup>' : ''); b.onclick = function () { set(c.id); }; f.appendChild(b);
     });
