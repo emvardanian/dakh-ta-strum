@@ -848,3 +848,9 @@ html:not([data-theme=light]) .panel .bb{fill:#dfe3ea}
 .gmore{display:flex!important;margin-top:20px}
 @media(max-width:1000px){.gph{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:600px){.gph{grid-template-columns:1fr 1fr;gap:8px}.gph .gp .ph{border-radius:12px}}
+
+/* кнопка «Показати всі» — у стилі сайту */
+.lmore,.gmore{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:54px;margin-top:20px;border-radius:999px;border:1.5px solid rgba(255,122,26,.55)!important;background:transparent!important;color:var(--acc)!important;font-family:Manrope,sans-serif;font-weight:800;font-size:15px;cursor:pointer;transition:background .35s,color .35s,border-color .35s}
+.lmore:hover,.gmore:hover{background:var(--acc)!important;color:#111!important;border-color:var(--acc)!important}
+.lmore span,.gmore span{transition:transform .35s var(--ease)}.lmore:hover span,.gmore:hover span{transform:translateY(3px)}
+@media(min-width:601px){.gmore{width:auto;margin:26px auto 0;padding:0 34px}}
