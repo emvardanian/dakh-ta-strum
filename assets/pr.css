@@ -585,3 +585,20 @@ html[data-theme=light] body:has(.hero.kino, .hero.dim) .nav:not(.solid) .burger 
 .rvs2{grid-template-columns:repeat(3,1fr)}
 .rvs2 blockquote p{font-size:16px}
 @media(max-width:1000px){.rvs2{grid-template-columns:1fr}}
+
+/* нова емблема */
+.logo svg.lg{width:52px;height:32px;flex:none}
+.lg .hs{fill:currentColor}.lg .or,.lg .bl{fill:var(--acc)}
+html[data-theme=light] .logo{color:#13294b}
+html[data-theme=light] body:has(.hero.kino, .hero.dim) .nav:not(.solid) .logo{color:#fff}
+.logo:hover .lg .bl{animation:zap .6s ease}
+@keyframes zap{30%{transform:translate(-8px,6px)}60%{transform:translate(4px,-3px)}}
+.lg .bl{transform-box:fill-box}
+.pre svg{width:150px;height:92px}
+.pre .h,.pre .o,.pre .b{stroke-dasharray:1;stroke-dashoffset:1;stroke-linejoin:round;fill-opacity:0}
+.pre .h{fill:var(--fg);stroke:var(--fg);stroke-width:10;animation:dr 1s .1s var(--ease) forwards,fl .6s 1s forwards}
+html[data-theme=light] .pre .h{fill:#13294b;stroke:#13294b}
+.pre .o{fill:var(--acc);stroke:var(--acc);stroke-width:8;animation:dr .7s .5s var(--ease) forwards,fl .5s 1.1s forwards}
+.pre .b{fill:var(--acc);stroke:var(--acc);stroke-width:8;animation:dr .6s .8s var(--ease) forwards,fl .4s 1.3s forwards}
+@keyframes fl{to{fill-opacity:1}}
+.logo svg.lg{width:60px;height:37px}
