@@ -144,7 +144,10 @@
       setTimeout(function () {
         list.innerHTML = '';
         if (!G.cats.length) {
-          list.innerHTML = '<div class="elx"><div><small>Електрика</small><h3>Електромонтаж під ключ</h3><p>Матеріали для електрики підбираємо під ваш будинок і проєкт — тому тут немає каталогу. Розкажіть, що потрібно, і ми прорахуємо роботу разом із матеріалами.</p><a class="btn btn-a" href="#zayavka" data-quiz-pick="Електрика">Прорахувати електрику</a></div><ul class="subl">' + EL.map(function (x, i) { return '<li style="--d:' + i * 90 + 'ms"><i></i>' + x + '</li>'; }).join('') + '</ul></div>';
+          list.innerHTML = '<div class="elx"><div class="ex-t"><small>Електрика</small><h3>Електромонтаж під ключ</h3><p>Матеріали для електрики підбираємо під ваш будинок і проєкт — тому тут немає каталогу. Розкажіть, що потрібно, і ми прорахуємо роботу разом із матеріалами.</p><ul class="subl">' + EL.map(function (x, i) { return '<li style="--d:' + i * 90 + 'ms"><i></i>' + x + '</li>'; }).join('') + '</ul><a class="btn btn-a" href="#zayavka" data-quiz-pick="Електрика">Прорахувати електрику</a></div>' +
+            '<div class="ex-v"><svg class="wire" viewBox="0 0 400 520" preserveAspectRatio="none" aria-hidden="true"><path class="w0" d="M0 70 C120 70 110 250 210 250 S320 430 400 440"/><path class="w1" d="M0 70 C120 70 110 250 210 250 S320 430 400 440"/></svg>' +
+            '<figure class="e1"><img src="' + BASE + 'el/e2.webp" alt="Монтаж електрощитка з автоматикою"></figure><figure class="e2"><img src="' + BASE + 'el/e1.webp" alt="Кабель, лампи та інструменти для електромонтажу"></figure>' +
+            '<span class="bolt"><svg viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></span></div></div>';
           requestAnimationFrame(function () { requestAnimationFrame(function () { var e = $('.elx', list); if (e) e.classList.add('on'); }); });
           return;
         }
@@ -184,7 +187,7 @@
     if (!matchMedia('(pointer:fine)').matches) return;
     var c = document.createElement('div'); c.className = 'cur'; c.textContent = 'ДИВИТИСЬ'; document.body.appendChild(c);
     var x = 0, y = 0, cx = 0, cy = 0;
-    addEventListener('mousemove', function (e) { x = e.clientX; y = e.clientY; c.classList.toggle('on', !!(e.target.closest && e.target.closest('.wkc'))); });
+    addEventListener('mousemove', function (e) { x = e.clientX; y = e.clientY; c.classList.toggle('on', !!(e.target.closest && e.target.closest('.wkc, .wc'))); });
     (function f() { cx += (x - cx) * .2; cy += (y - cy) * .2; c.style.translate = cx + 'px ' + cy + 'px'; requestAnimationFrame(f); })();
   }
   /* роботи — ті самі великі напрями: навіси й гаражі йдуть разом із парканами */
@@ -211,6 +214,53 @@
   }
   var pick = function (id) { var g = WG.filter(function (x) { return x.id === id; })[0]; return WORKS.filter(function (w) { return id === 'all' || w.tags.some(function (t) { return g.t.indexOf(t) > -1; }); }); };
   var open = function (id) { var w = WORKS.filter(function (x) { return x.id === id; })[0]; if (w && window.DTS) DTS.openLb(w, 0); };
+
+
+  /* роботи — структурована сітка за напрямами; анімація появи залежить від варіанта */
+  function worksGrid(host, mode) {
+    host.classList.add('wg', 'wg-' + mode);
+    var box = document.createElement('div'); box.className = 'wg-box';
+    var EMP = '<div class="wc-emp"><span class="ico"><svg viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></span><div><b>Фото електромонтажу додамо найближчим часом</b><span>Зараз збираємо фото з об\'єктів. Зателефонуйте — розкажемо, як працюємо з електрикою.</span></div><a class="btn btn-a" href="#zayavka" data-quiz-pick="Електрика">Прорахувати</a></div>';
+    function wc(w) {
+      return '<button class="wc" data-w="' + w.id + '"><span class="ph"><img src="' + T(w.photos[0]) + '" alt="' + esc(w.title) + '" loading="lazy"><span class="c">' + w.photos.length + ' фото</span></span><span class="tx"><small>' + esc(gOf(w).name) + '</small><b>' + esc(w.title) + '</b></span></button>';
+    }
+    function words(n) { var m = n % 10, h = n % 100; return n + ' ' + (m === 1 && h !== 11 ? "об'єкт" : (m >= 2 && m <= 4 && (h < 12 || h > 14) ? "об'єкти" : "об'єктів")); }
+    function html(id) {
+      if (id !== 'all') { var l = pick(id); return '<div class="wgrid">' + (l.length ? l.map(wc).join('') : EMP) + '</div>'; }
+      return WG.slice(1).map(function (g, i) {
+        var l = WORKS.filter(function (w) { return gOf(w).id === g.id; }), more = pick(g.id).length;
+        return '<div class="wgrp"><div class="wh"><span class="no">0' + (i + 1) + '</span><h3>' + esc(g.name) + '</h3><span class="cnt">' + (more ? words(more) : 'фото скоро') + '</span>' +
+          (more > 4 ? '<button class="more" data-g="' + g.id + '">Усі ' + more + ' →</button>' : '') + '</div><div class="wgrid">' + (l.length ? l.slice(0, 4).map(wc).join('') : EMP) + '</div></div>';
+      }).join('');
+    }
+    function chk() {
+      $$('.wc:not(.in):not(.q), .wc-emp:not(.in):not(.q), .wh:not(.in):not(.q)', box).forEach(function (el) {
+        var r = el.getBoundingClientRect();
+        if (r.top < innerHeight * .92 && r.bottom > 0) {
+          var sib = el.parentNode ? Array.prototype.indexOf.call(el.parentNode.children, el) : 0;
+          el.classList.add('q'); setTimeout(function () { el.classList.add('in'); el.classList.remove('q'); }, (sib % 4) * 110);
+        }
+      });
+    }
+    addEventListener('scroll', chk, { passive: true }); addEventListener('resize', chk);
+    var f = document.createElement('div'); f.className = 'wk-f'; f.setAttribute('role', 'tablist');
+    function set(id) {
+      $$('.chip', f).forEach(function (x) { var on = x.dataset.id === id; x.classList.toggle('act', on); x.setAttribute('aria-selected', on); });
+      var had = box.children.length; box.classList.add('wout');
+      setTimeout(function () {
+        box.innerHTML = html(id); box.classList.remove('wout');
+        $$('.wc', box).forEach(function (c) { c.onclick = function () { open(c.dataset.w); }; });
+        $$('.more', box).forEach(function (m) { m.onclick = function () { set(m.dataset.g); var t = host.getBoundingClientRect().top + scrollY - 100; scrollTo({ top: t, behavior: 'smooth' }); }; });
+        requestAnimationFrame(chk);
+      }, had ? 350 : 0);
+    }
+    WG.forEach(function (c) {
+      var n = pick(c.id).length;
+      var b = document.createElement('button'); b.className = 'chip'; b.dataset.id = c.id; b.setAttribute('role', 'tab');
+      b.innerHTML = esc(c.name) + (n ? '<sup>' + n + '</sup>' : ''); b.onclick = function () { set(c.id); }; f.appendChild(b);
+    });
+    host.appendChild(f); host.appendChild(box); set('all');
+  }
 
   /* роботи 1: мозаїка, кожна картка відкривається шторкою */
   function worksMosaic(host) {
@@ -297,7 +347,7 @@
   function init() {
     var h = $('[data-hero]'); if (h) ({ kino: heroKino, kolazh: heroKolazh, dim: heroDim })[h.dataset.hero](h);
     odometers(); catalog();
-    var w = $('[data-wmode]'); if (w) ({ mosaic: worksMosaic, accordion: worksAccordion, ring: worksRing })[w.dataset.wmode](w);
+    var w = $('[data-wmode]'); if (w) worksGrid(w, w.dataset.wmode);
     cursor(); preloader();
     var mq = $('#mq'); if (mq) { var words = ['Покрівля', 'Утеплення', 'Підшива', 'Водостік', 'Фасади', 'Навіси', 'Паркани', 'Електромонтаж']; var r = words.map(function (x, i) { return '<span class="' + (i % 2 ? 'o' : '') + '">' + x + '</span>'; }).join(''); mq.innerHTML = r + r; }
   }
