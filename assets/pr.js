@@ -175,7 +175,13 @@
       var g = Object.keys(p.colors), k = 0;
       if (g.length) h += '<h4>Палітра — натисніть, щоб приміряти</h4>' + g.map(function (gr) { return '<div class="grp">' + esc(gr) + '</div><div class="ral">' + p.colors[gr].map(function (c) { return '<button style="background:' + swatch(c) + ';animation-delay:' + (k++) * 25 + 'ms" data-n="' + esc(gr + ' · ' + c) + '" data-c="' + esc(c) + '" aria-label="' + esc(gr + ': ' + c) + '"></button>'; }).join('') + '</div>'; }).join('') + '<div class="rn">Оберіть колір</div>';
       if (p.adv.length) h += '<h4>Переваги</h4><ol class="adv">' + p.adv.map(function (a) { return '<li>' + esc(a) + '</li>'; }).join('') + '</ol>';
-      if (p.items.length) h += '<h4>Елементи</h4><div class="els">' + p.items.map(function (a) { return '<span>' + esc(a) + '</span>'; }).join('') + '</div>';
+      if (p.items.length) {
+        var IM = (window.ITEM_IMG && ITEM_IMG[p.id]) || {};
+        h += '<h4>Елементи</h4><div class="elg">' + p.items.map(function (a, i) {
+          var src = IM[a];
+          return '<figure style="animation-delay:' + (i * 40) + 'ms">' + (src ? '<span class="ei"><img src="' + BASE + src + '" alt="' + esc(a) + '" loading="lazy"></span>' : '<span class="ei ei-n"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10"/></svg></span>') + '<figcaption>' + esc(a) + '</figcaption></figure>';
+        }).join('') + '</div>';
+      }
       h += '<a class="btn btn-a" href="#zayavka">Прорахувати з монтажем <svg class="arr" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 10h13M11 5l5 5-5 5"/></svg></a></div>';
       drw.innerHTML = h; drw.scrollTop = 0; drw.setAttribute('aria-label', p.name);
       $('.x', drw).onclick = close; $('.btn', drw).onclick = function () { close(); var q = $('[data-quiz]'); if (q && q._pick) q._pick(p); };
@@ -225,45 +231,39 @@
   function worksGrid(host, mode) {
     host.classList.add('wg', 'wg-' + mode);
     var box = document.createElement('div'); box.className = 'wg-box';
-    var EMP = '<div class="wc-emp"><span class="ico"><svg viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></span><div><b>Фото електромонтажу додамо найближчим часом</b><span>Зараз збираємо фото з об\'єктів. Зателефонуйте — розкажемо, як працюємо з електрикою.</span></div><a class="btn btn-a" href="#zayavka" data-quiz-pick="Електрика">Прорахувати</a></div>';
-    function wc(w) {
-      return '<button class="wc" data-w="' + w.id + '"><span class="ph"><img src="' + T(w.photos[0]) + '" alt="' + esc(w.title) + '" loading="lazy"><span class="c">' + w.photos.length + ' фото</span></span><span class="tx"><small>' + esc(gOf(w).name) + '</small><b>' + esc(w.title) + '</b></span></button>';
-    }
-    function words(n) { var m = n % 10, h = n % 100; return n + ' ' + (m === 1 && h !== 11 ? "об'єкт" : (m >= 2 && m <= 4 && (h < 12 || h > 14) ? "об'єкти" : "об'єктів")); }
-    function html(id) {
-      if (id !== 'all') { var l = pick(id); return '<div class="wgrid">' + (l.length ? l.map(wc).join('') : EMP) + '</div>'; }
-      return WG.slice(1).filter(function (g) { return pick(g.id).length; }).map(function (g, i) {
-        var l = WORKS.filter(function (w) { return gOf(w).id === g.id; }), more = pick(g.id).length;
-        return '<div class="wgrp"><div class="wh"><span class="no">0' + (i + 1) + '</span><h3>' + esc(g.name) + '</h3><span class="cnt">' + (more ? words(more) : 'фото скоро') + '</span>' +
-          (more > 4 ? '<button class="more" data-g="' + g.id + '">Усі ' + more + ' →</button>' : '') + '</div><div class="wgrid">' + (l.length ? l.slice(0, 4).map(wc).join('') : EMP) + '</div></div>';
-      }).join('');
-    }
+    var G = window.GALLERY || [], cur = G[0];
+    var LIM = matchMedia('(max-width:600px)').matches ? 8 : 12;
     var wio = new IntersectionObserver(function (es) {
       es.forEach(function (e) {
         if (!e.isIntersecting) return; var el = e.target; wio.unobserve(el);
-        var sib = el.parentNode ? Array.prototype.indexOf.call(el.parentNode.children, el) : 0;
-        setTimeout(function () { el.classList.add('in'); }, (sib % 4) * 110);
+        var sib = Array.prototype.indexOf.call(el.parentNode.children, el);
+        setTimeout(function () { el.classList.add('in'); }, (sib % 4) * 90);
       });
     }, { rootMargin: '0px 0px -6% 0px' });
-    function chk() { $$('.wc:not(.in), .wc-emp:not(.in), .wh:not(.in)', box).forEach(function (el) { wio.observe(el); }); }
-    var f = document.createElement('div'); f.className = 'wk-f'; f.setAttribute('role', 'tablist');
-    function set(id) {
-      $$('.chip', f).forEach(function (x) { var on = x.dataset.id === id; x.classList.toggle('act', on); x.setAttribute('aria-selected', on); });
-      var had = box.children.length; box.classList.add('wout');
-      setTimeout(function () {
-        box.innerHTML = html(id); box.classList.remove('wout');
-        $$('.wc', box).forEach(function (c) { c.onclick = function () { open(c.dataset.w); }; });
-        $$('.more', box).forEach(function (m) { m.onclick = function () { set(m.dataset.g); var t = host.getBoundingClientRect().top + scrollY - 100; scrollTo({ top: t, behavior: 'smooth' }); }; });
-        requestAnimationFrame(chk);
-      }, had ? 350 : 0);
+    function render(g, all) {
+      var list = all ? g.photos : g.photos.slice(0, LIM);
+      var h = '<div class="gph">' + list.map(function (k, i) {
+        return '<button class="wc gp" data-i="' + i + '" aria-label="' + esc(g.name) + ', фото ' + (i + 1) + '"><span class="ph"><img src="' + T(k) + '" alt="' + esc(g.name) + '" loading="lazy"></span></button>';
+      }).join('') + '</div>';
+      if (!all && g.photos.length > LIM) h += '<button class="lmore gmore">Показати всі ' + g.photos.length + ' фото <span>↓</span></button>';
+      box.innerHTML = h;
+      $$('.gp', box).forEach(function (b) { b.onclick = function () { if (window.DTS) DTS.openLb({ title: g.name, note: g.photos.length + ' фото з наших об\'єктів', photos: g.photos }, +b.dataset.i); }; wio.observe(b); });
+      var m = $('.gmore', box); if (m) m.onclick = function () { render(g, true); };
     }
-    WG.forEach(function (c) {
-      var n = pick(c.id).length; if (c.id !== 'all' && !n) return;
-      var b = document.createElement('button'); b.className = 'chip'; b.dataset.id = c.id; b.setAttribute('role', 'tab');
-      b.innerHTML = esc(c.name) + (n ? '<sup>' + n + '</sup>' : ''); b.onclick = function () { set(c.id); }; f.appendChild(b);
+    function set(g) {
+      cur = g;
+      $$('.chip', f).forEach(function (x) { var on = x.dataset.id === g.id; x.classList.toggle('act', on); x.setAttribute('aria-selected', on); });
+      var had = box.children.length; box.classList.add('wout');
+      setTimeout(function () { render(g, false); box.classList.remove('wout'); }, had ? 350 : 0);
+    }
+    var f = document.createElement('div'); f.className = 'wk-f'; f.setAttribute('role', 'tablist');
+    G.forEach(function (g) {
+      var b = document.createElement('button'); b.className = 'chip'; b.dataset.id = g.id; b.setAttribute('role', 'tab');
+      b.innerHTML = esc(g.name) + '<sup>' + g.photos.length + '</sup>'; b.onclick = function () { set(g); }; f.appendChild(b);
     });
-    host.appendChild(f); host.appendChild(box); set('all');
+    host.appendChild(f); host.appendChild(box); set(G[0]);
   }
+
 
   /* роботи 1: мозаїка, кожна картка відкривається шторкою */
   function worksMosaic(host) {
