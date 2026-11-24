@@ -8,6 +8,8 @@
   var FORM_ENDPOINT = '';
   /* Заявки в Telegram. Вписати токен бота від @BotFather і chat_id власника (+380935951954). */
   var TG = { token: '', chat: '' };
+  /* Посередник Google Apps Script: токен зберігається там, а не на сайті */
+  var LEAD_URL = 'https://script.google.com/macros/s/AKfycbzUFDAAJ34kTLE0-nbPfC_qXGDNJtcXMXjVNK6B__tzRc4TbLrnKoo5sjVhJrDkg6yt/exec';
   var BASE = (document.currentScript && document.currentScript.src.replace(/core\.js.*$/, '')) || 'assets/';
   var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   var $ = function (s, r) { return (r || document).querySelector(s); };
@@ -377,8 +379,9 @@
   }
   function send(d) {
     d.page = location.pathname; d.time = new Date().toISOString();
-    var txt = leadText(d), ok = !!(TG.token && TG.chat);
-    if (ok) { try { fetch('https://api.telegram.org/bot' + TG.token + '/sendMessage', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ chat_id: TG.chat, text: txt }) }); } catch (_) {} }
+    var txt = leadText(d), ok = !!(TG.token && TG.chat) || !!LEAD_URL;
+    if (LEAD_URL) { try { fetch(LEAD_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ phone: d.phone, text: txt }) }); } catch (_) {} }
+    if (TG.token && TG.chat) { try { fetch('https://api.telegram.org/bot' + TG.token + '/sendMessage', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ chat_id: TG.chat, text: txt }) }); } catch (_) {} }
     if (FORM_ENDPOINT) { try { fetch(FORM_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(d) }); } catch (_) {} }
     return { auto: ok, text: txt };
   }
