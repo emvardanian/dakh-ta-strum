@@ -577,3 +577,8 @@ html[data-theme=light] body:has(.hero.kino, .hero.dim) .nav:not(.solid) .burger 
 .rvs2 .rvw.on::after{transform:scaleX(1)}
 @media(max-width:900px){.rvs2{grid-template-columns:1fr}.rvs2 .rvw{padding:26px}.rvs2 blockquote p{font-size:16px}}
 .rvs2{align-items:stretch}.rvs2 .who{margin-top:auto}
+.rvs2 .q{display:none}
+.stars{display:flex;gap:4px}
+.stars i{width:22px;height:22px;display:block;transform:scale(0) rotate(-60deg);transition:transform .7s cubic-bezier(.34,1.56,.64,1) calc(var(--s) + .4s)}
+.stars svg{width:100%;height:100%;fill:var(--acc)}
+.rvw.on .stars i{transform:none}
