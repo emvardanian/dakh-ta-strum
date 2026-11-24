@@ -545,3 +545,21 @@ html[data-theme=light] .ex-v figure{box-shadow:0 30px 60px -24px rgba(17,20,26,.
  .gt b{font-size:14px}
  .gt.act{background:var(--acc)}
 }
+
+/* світла тема: фото в шапці без висвітлення, контрастне */
+html[data-theme=light] .hero.kino::after{background:linear-gradient(90deg,rgba(10,12,16,.78) 0%,rgba(10,12,16,.4) 45%,rgba(10,12,16,0) 75%),linear-gradient(0deg,rgba(10,12,16,.55),rgba(10,12,16,0) 35%)}
+html[data-theme=light] .hero.dim::after{background:linear-gradient(0deg,rgba(10,12,16,.82),rgba(10,12,16,.35) 50%,rgba(10,12,16,.15))}
+html[data-theme=light] .hero.kino::before,html[data-theme=light] .hero.dim::before{background:linear-gradient(180deg,rgba(10,12,16,.55),rgba(10,12,16,0))}
+html[data-theme=light] .hero.kino .inner,html[data-theme=light] .hero.dim .inner{color:#fff}
+html[data-theme=light] .hero.kino p.sub,html[data-theme=light] .hero.dim p.sub,html[data-theme=light] .hero.kino .hcap,html[data-theme=light] .hero.dim .hcap{color:#dde2ea}
+html[data-theme=light] .hero.kino .dots i,html[data-theme=light] .hero.dim .dots i{background:rgba(255,255,255,.3)}
+html[data-theme=light] .hero.kino .btn-line,html[data-theme=light] .hero.dim .btn-line{border-color:rgba(255,255,255,.4);color:#fff}
+html[data-theme=light] .hero.kino .btn-line::before,html[data-theme=light] .hero.dim .btn-line::before{background:#fff}
+html[data-theme=light] .hero.kino .btn-line:hover,html[data-theme=light] .hero.dim .btn-line:hover{color:#111}
+html[data-theme=light] .hero.kino .btn-a:hover,html[data-theme=light] .hero.dim .btn-a:hover{color:#111}
+html[data-theme=light] .hero.kino .btn-a::before,html[data-theme=light] .hero.dim .btn-a::before{background:#fff}
+/* навігація над фото — світла, доки не прокрутили */
+html[data-theme=light] body:has(.hero.kino, .hero.dim) .nav:not(.solid){color:#fff}
+html[data-theme=light] body:has(.hero.kino, .hero.dim) .nav:not(.solid) .logo,html[data-theme=light] body:has(.hero.kino, .hero.dim) .nav:not(.solid) .logo small{color:#fff}
+html[data-theme=light] body:has(.hero.kino, .hero.dim) .nav:not(.solid) .thm{border-color:rgba(255,255,255,.35)}
+html[data-theme=light] body:has(.hero.kino, .hero.dim) .nav:not(.solid) .burger span{background:#fff}
