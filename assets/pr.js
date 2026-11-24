@@ -151,12 +151,18 @@
           requestAnimationFrame(function () { requestAnimationFrame(function () { var e = $('.elx', list); if (e) e.classList.add('on'); }); });
           return;
         }
+        var mob = matchMedia('(max-width:600px)').matches, CUT = 5;
+        list.classList.toggle('cut', mob && items.length > CUT);
         items.forEach(function (p, i) {
           var b = document.createElement('button'); b.className = 'item'; b.style.animationDelay = i * 60 + 'ms';
           var sp = p.specs.slice(0, 3).map(function (s) { return '<span>' + esc(s[0]) + '<b>' + esc(s[1]) + '</b></span>'; }).join('') || '<span>Елементів<b>' + (p.items.length || '—') + '</b></span>';
           b.innerHTML = '<span class="th"><img src="' + BASE + 'p/' + p.id + '.webp" alt="' + esc(p.name) + '" loading="lazy"></span><span><small>' + esc(catName(p.cat)) + '</small><h3>' + esc(p.name) + '</h3></span><span class="sp">' + sp + '</span><span class="ar" aria-hidden="true">→</span>';
           b.onclick = function () { openD(p); }; list.appendChild(b);
         });
+        if (mob && items.length > CUT) {
+          var m = document.createElement('button'); m.className = 'lmore'; m.innerHTML = 'Показати всі ' + items.length + ' <span>↓</span>';
+          m.onclick = function () { list.classList.remove('cut'); m.remove(); }; list.appendChild(m);
+        }
       }, old.length ? 320 : 0);
     }
     setG(GROUPS[0]); setTimeout(moveInd, 600);
@@ -344,11 +350,30 @@
     addEventListener('resize', layout); frame();
   }
 
+  /* мобільні каруселі з крапками */
+  function swipes() {
+    $$('[data-swipe]').forEach(function (el) {
+      var d = document.createElement('div'); d.className = 'sw-dots'; el.after(d);
+      function build() {
+        var kids = Array.prototype.filter.call(el.children, function (c) { return c.offsetParent !== null; });
+        d.innerHTML = kids.map(function () { return '<i></i>'; }).join('');
+        upd();
+      }
+      function upd() {
+        var kids = el.children, best = 0, bd = 1e9, c = el.scrollLeft + el.clientWidth / 2;
+        for (var i = 0; i < kids.length; i++) { var k = kids[i], m = k.offsetLeft + k.offsetWidth / 2 - el.offsetLeft; if (Math.abs(m - c) < bd) { bd = Math.abs(m - c); best = i; } }
+        $$('i', d).forEach(function (x, j) { x.classList.toggle('on', j === best); });
+      }
+      el.addEventListener('scroll', function () { requestAnimationFrame(upd); }, { passive: true });
+      addEventListener('resize', build); build();
+    });
+  }
+
   function init() {
     var h = $('[data-hero]'); if (h) ({ kino: heroKino, kolazh: heroKolazh, dim: heroDim })[h.dataset.hero](h);
     odometers(); catalog();
     var w = $('[data-wmode]'); if (w) worksGrid(w, w.dataset.wmode);
-    cursor(); preloader();
+    swipes(); cursor(); preloader();
     var mq = $('#mq'); if (mq) { var words = ['Покрівля', 'Утеплення', 'Підшива', 'Водостік', 'Фасади', 'Навіси', 'Паркани', 'Електромонтаж']; var r = words.map(function (x, i) { return '<span class="' + (i % 2 ? 'o' : '') + '">' + x + '</span>'; }).join(''); mq.innerHTML = r + r; }
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
