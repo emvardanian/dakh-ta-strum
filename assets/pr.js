@@ -6,7 +6,8 @@
   var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   var BASE = (document.currentScript && document.currentScript.src.replace(/pr\.js.*$/, '')) || '../assets/';
   var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
-  var H = function (k) { return BASE + 'hero/' + k + '.webp'; };
+  var MOB = matchMedia('(max-width:820px)').matches;
+  var H = function (k) { return BASE + 'hero/' + k + (MOB ? '-m' : '') + '.webp'; };
   var html = document.documentElement;
   var HERO = [{ k: 'h1', cap: 'Металочерепиця з мансардним фронтоном' }, { k: 'h3', cap: 'Складна покрівля з люкарнами' }, { k: 'h2', cap: 'Монтаж покрівлі на заході сонця' }, { k: 'h4', cap: 'Чисті лінії, точні стики' }];
 
@@ -239,16 +240,14 @@
           (more > 4 ? '<button class="more" data-g="' + g.id + '">Усі ' + more + ' →</button>' : '') + '</div><div class="wgrid">' + (l.length ? l.slice(0, 4).map(wc).join('') : EMP) + '</div></div>';
       }).join('');
     }
-    function chk() {
-      $$('.wc:not(.in):not(.q), .wc-emp:not(.in):not(.q), .wh:not(.in):not(.q)', box).forEach(function (el) {
-        var r = el.getBoundingClientRect();
-        if (r.top < innerHeight * .92 && r.bottom > 0) {
-          var sib = el.parentNode ? Array.prototype.indexOf.call(el.parentNode.children, el) : 0;
-          el.classList.add('q'); setTimeout(function () { el.classList.add('in'); el.classList.remove('q'); }, (sib % 4) * 110);
-        }
+    var wio = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (!e.isIntersecting) return; var el = e.target; wio.unobserve(el);
+        var sib = el.parentNode ? Array.prototype.indexOf.call(el.parentNode.children, el) : 0;
+        setTimeout(function () { el.classList.add('in'); }, (sib % 4) * 110);
       });
-    }
-    addEventListener('scroll', chk, { passive: true }); addEventListener('resize', chk);
+    }, { rootMargin: '0px 0px -6% 0px' });
+    function chk() { $$('.wc:not(.in), .wc-emp:not(.in), .wh:not(.in)', box).forEach(function (el) { wio.observe(el); }); }
     var f = document.createElement('div'); f.className = 'wk-f'; f.setAttribute('role', 'tablist');
     function set(id) {
       $$('.chip', f).forEach(function (x) { var on = x.dataset.id === id; x.classList.toggle('act', on); x.setAttribute('aria-selected', on); });
