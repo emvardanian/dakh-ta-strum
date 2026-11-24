@@ -768,3 +768,66 @@ html[data-theme=light] .wy-n{background-image:linear-gradient(180deg,rgba(17,20,
  .cg img{transition:transform 1.2s var(--ease),opacity .8s}
 }
 @media(max-width:600px){.wy-n{font-size:56px}}
+
+/* квіз: Telegram і згода */
+.qz-pp{margin-top:14px;font-size:12.5px;color:var(--mut);line-height:1.5}.qz-pp a{color:inherit;text-decoration:underline}
+.qz-tg{display:inline-flex;align-items:center;justify-content:center;min-height:54px;padding:0 26px;margin:14px 0 6px;border-radius:999px;background:#2aa3e0;color:#fff!important;font-weight:800;text-decoration:none}
+
+/* назва ROOF & VOLT */
+.logo b{letter-spacing:.03em}
+
+/* цифри — 3 колонки */
+.stats.s3{grid-template-columns:repeat(3,1fr)}
+@media(max-width:1000px){.stats.s3{grid-template-columns:repeat(3,1fr)}.stats.s3 .stat:nth-child(2){border-right:1px solid var(--line)}}
+@media(max-width:600px){.stats.s3{grid-template-columns:repeat(3,1fr)!important;gap:8px}.stats.s3 .stat{padding:14px 10px}.stats.s3 .odo{font-size:30px}.stats.s3 .odo .u{font-size:10px;margin-left:3px}.stats.s3 .stat p{font-size:11.5px;line-height:1.35}.stats.s3 .pre-t2{font-size:9px;letter-spacing:.06em}}
+
+/* «Чому обирають нас» — 3 колонки */
+.wy{grid-template-columns:repeat(3,1fr)}
+@media(max-width:1000px){.wy{grid-template-columns:repeat(3,1fr)}.wy-c:nth-child(3){padding-left:34px}.wy-c:nth-child(3)::before{display:block}}
+@media(max-width:600px){.wy{grid-template-columns:1fr;gap:18px}.wy-c{display:grid!important;grid-template-columns:96px 1fr;column-gap:10px;align-items:start}.wy-top{grid-row:span 2;height:56px;margin:0}.wy-c h3{margin-top:4px}}
+
+/* заставка — швидко (≈0,5 с) */
+.pre{transition:clip-path .55s var(--ease)}
+.pre .h{animation:dr .35s 0s var(--ease) forwards,fl .2s .3s forwards}
+.pre .o{animation:dr .3s .1s var(--ease) forwards,fl .2s .3s forwards}
+.pre .b{animation:dr .3s .15s var(--ease) forwards,fl .2s .35s forwards}
+
+/* без власного курсора */
+.wc,.wkc{cursor:pointer!important}.cur{display:none!important}
+
+/* заголовки трохи компактніші, без незграбних переносів */
+.sh h2{font-size:clamp(28px,3.7vw,52px);text-wrap:balance}
+.hero h1{font-size:clamp(36px,5vw,76px)}
+.wy-c h3,.sv h3,.st h3,.elx h3{text-wrap:balance}
+.wy-c h3{font-size:clamp(17px,1.45vw,20px)}
+.why-h h2{font-size:clamp(28px,3.6vw,50px)}
+
+/* ---------- «Електрика»: анімований щиток замість стокових фото ---------- */
+.ex-v{display:grid;place-items:center}
+.panel{width:min(100%,400px);height:100%;overflow:visible}
+.panel .pb{fill:var(--p2);stroke:var(--line);stroke-width:2;opacity:0;transform:scale(.94);transform-origin:center;transform-box:fill-box;transition:opacity .8s var(--ease),transform .9s var(--ease)}
+.elx.on .panel .pb{opacity:1;transform:none}
+.panel .rail{fill:#8a93a0;opacity:.5}
+.panel .bb{fill:#e8ebf0}
+html:not([data-theme=light]) .panel .bb{fill:#dfe3ea}
+.panel .slot{fill:#c7ccd4}
+.panel .tog{fill:#2b3038;transform:translateY(0);transition:transform .45s cubic-bezier(.34,1.56,.64,1),fill .3s;transition-delay:calc(var(--k) * .16s + .9s)}
+.elx.on .panel .tog{transform:translateY(-13px);fill:var(--acc)}
+.panel .led{fill:#59606b;transition:fill .3s,filter .3s;transition-delay:calc(var(--k) * .16s + 1s)}
+.elx.on .panel .led{fill:#7dff9a;filter:drop-shadow(0 0 4px #7dff9a)}
+.panel .brk{opacity:0;transform:translateY(12px);transition:opacity .6s var(--ease),transform .6s var(--ease);transition-delay:calc(var(--k) * .08s + .3s)}
+.elx.on .panel .brk{opacity:1;transform:none}
+.panel .wr{fill:none;stroke-width:5;stroke-linecap:round;stroke-dasharray:160;stroke-dashoffset:160;transition:stroke-dashoffset 1.2s var(--ease);transition-delay:calc(var(--k) * .1s + .4s)}
+.elx.on .panel .wr{stroke-dashoffset:0}
+.panel .disp{fill:#0b0e12;stroke:rgba(255,122,26,.35);stroke-width:1.5}
+.panel .dt{font-family:Unbounded,sans-serif;font-size:30px;font-weight:500;fill:var(--acc);opacity:0}
+.elx.on .panel .dt{animation:dton 1s steps(1) 2s forwards}
+@keyframes dton{0%{opacity:1}12%{opacity:.2}24%{opacity:1}36%{opacity:.4}48%,100%{opacity:1}}
+.panel .lab{font-family:Manrope,sans-serif;font-size:13px;font-weight:700;letter-spacing:.2em;fill:var(--mut)}
+.panel .spk{stroke:var(--acc);stroke-width:3;stroke-dasharray:18 200;stroke-dashoffset:218;opacity:0}
+.elx.on .panel .spk{opacity:1;animation:spark2 1.8s linear 2.4s infinite}
+@keyframes spark2{to{stroke-dashoffset:0}}
+.ex-v .bolt{left:auto;right:6%;top:6%}
+@media(max-width:820px){.elx.on .panel .spk{animation:none;opacity:0}}
+.odo{font-variant-numeric:tabular-nums;font-feature-settings:"tnum"}
+@media(max-width:600px){.wy-c{grid-template-columns:112px 1fr}.wy-n{font-size:46px;left:34px;opacity:1}.wy-top{height:52px}}

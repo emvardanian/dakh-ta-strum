@@ -1,4 +1,4 @@
-/* Дах та струм — спільний рушій сайту: рілс у шапці, роботи, каталог, квіз, анімації.
+/* ROOF & VOLT — спільний рушій сайту: рілс у шапці, роботи, каталог, квіз, анімації.
    Теми задаються CSS-змінними у кожному варіанті:
    --acc --acc-ink --bg --fg --mut --line --card --card-fg --lb-bg --radius --font-h */
 (function () {
@@ -6,6 +6,8 @@
   var PHONE = '+380935951954', PHONE_TXT = '093 59 51 954';
   /* Підключіть сюди обробник заявок (Telegram-бот / CRM / Google Apps Script). Порожньо — заявка лише показується. */
   var FORM_ENDPOINT = '';
+  /* Заявки в Telegram. Вписати токен бота від @BotFather і chat_id власника (+380935951954). */
+  var TG = { token: '', chat: '' };
   var BASE = (document.currentScript && document.currentScript.src.replace(/core\.js.*$/, '')) || 'assets/';
   var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   var $ = function (s, r) { return (r || document).querySelector(s); };
@@ -155,7 +157,7 @@
     var out = null;
     if (host.hasAttribute('data-outro')) {
       out = document.createElement('div'); out.className = 'reel-out';
-      out.innerHTML = '<div class="lg">' + LOGO + '<b>ДАХ ТА СТРУМ</b><small>Покрівля · Фасади · Електрика</small></div>';
+      out.innerHTML = '<div class="lg">' + LOGO + '<b>ROOF &amp; VOLT</b><small>Покрівля · Фасади · Електрика</small></div>';
       host.appendChild(out);
     }
     var bars = $('[data-reel-bars]'), cap = $('[data-reel-cap]'), num = $('[data-reel-num]');
@@ -188,8 +190,8 @@
     var name = mob ? 'hero-m' : 'hero';
     var mode = host.dataset.intro || 'curtain';
     var h = '<video class="hv-v" muted playsinline loop preload="auto" poster="' + BASE + 'video/' + name + '-poster.jpg"><source src="' + BASE + 'video/' + name + '.mp4" type="video/mp4"></video>' +
-      '<div class="reel-out"><div class="lg">' + LOGO + '<b>ДАХ ТА СТРУМ</b><small>Покрівля · Фасади · Електрика</small></div></div>';
-    if (mode === 'curtain') h += '<div class="hv-cur"><div class="lg"><div><svg viewBox="0 0 64 48" aria-hidden="true"><path class="hs" d="M4 46V24L27 5l10 8V7h6v11l4 3.3V46z"/><path class="bs" d="M53 3 44 24h7l-5 21 15-27h-8l6-15z"/></svg><b>ДАХ ТА СТРУМ</b></div></div></div>';
+      '<div class="reel-out"><div class="lg">' + LOGO + '<b>ROOF &amp; VOLT</b><small>Покрівля · Фасади · Електрика</small></div></div>';
+    if (mode === 'curtain') h += '<div class="hv-cur"><div class="lg"><div><svg viewBox="0 0 64 48" aria-hidden="true"><path class="hs" d="M4 46V24L27 5l10 8V7h6v11l4 3.3V46z"/><path class="bs" d="M53 3 44 24h7l-5 21 15-27h-8l6-15z"/></svg><b>ROOF &amp; VOLT</b></div></div></div>';
     if (mode === 'knockout') {
       var bg = host.dataset.koBg || '#0e1116', fs = mob ? 230 : 250;
       h += '<svg class="hv-ko" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid meet" aria-hidden="true"><defs><mask id="hvko" maskUnits="userSpaceOnUse" x="-20000" y="-20000" width="40000" height="40000"><rect x="-20000" y="-20000" width="40000" height="40000" fill="#fff"/>' +
@@ -369,27 +371,35 @@
   }
   function closeP() { if (!drw) return; drw.classList.remove('open'); dbg.classList.remove('open'); document.documentElement.style.overflow = ''; }
 
-  function send(d) { d.page = location.pathname; d.time = new Date().toISOString(); if (FORM_ENDPOINT) { try { fetch(FORM_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(d) }); } catch (_) {} } }
+  function leadText(d) {
+    return ['🔔 Нова заявка з сайту ROOF & VOLT', '', 'Напрям: ' + (d.service || '—') + (d.material ? ' (' + d.material + ')' : ''), 'Коли: ' + (d.when || '—'),
+      'Ім\'я: ' + (d.name || '—'), 'Телефон: ' + d.phone, 'Населений пункт: ' + (d.city || '—'), 'Зв\'язок: ' + (d.via || '—')].join('\n');
+  }
+  function send(d) {
+    d.page = location.pathname; d.time = new Date().toISOString();
+    var txt = leadText(d), ok = !!(TG.token && TG.chat);
+    if (ok) { try { fetch('https://api.telegram.org/bot' + TG.token + '/sendMessage', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ chat_id: TG.chat, text: txt }) }); } catch (_) {} }
+    if (FORM_ENDPOINT) { try { fetch(FORM_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(d) }); } catch (_) {} }
+    return { auto: ok, text: txt };
+  }
 
   /* ---------- QUIZ (заявка на прорахунок) ---------- */
   function initQuiz() {
     var host = $('[data-quiz]'); if (!host) return;
     var Q = [
       { k: 'service', q: 'Що потрібно зробити?', o: ['Покрівля', 'Фасади', 'Паркани та навіси', 'Електрика', 'Кілька напрямів'] },
-      { k: 'state', q: 'Яка зараз ситуація?', o: ['Новий будинок — даху ще немає', 'Заміна старого покриття (шифер тощо)', 'Протікає — потрібен ремонт', 'Ще не знаю — потрібна порада'] },
-      { k: 'size', q: 'Приблизний розмір об\'єкта', o: ['Невеликий (до 100 м²)', 'Середній (100–200 м²)', 'Великий (понад 200 м²)', 'Не знаю — заміряєте'] },
       { k: 'when', q: 'Коли плануєте роботи?', o: ['Якнайшвидше', 'Протягом 1–2 місяців', 'Цього сезону', 'Поки що прицінююсь'] }
     ];
     var A = {}, step = 0, N = Q.length + 1;
     var h = '<div class="qz-top"><span class="qz-s"></span><span>Безкоштовно · ні до чого не зобов\'язує</span></div><div class="qz-bar"><i></i></div>';
     Q.forEach(function (x, i) { h += '<div class="qz-st" data-i="' + i + '"><h3>' + x.q + '</h3><div class="qz-o">' + x.o.map(function (o) { return '<button type="button">' + o + '</button>'; }).join('') + '</div></div>'; });
-    h += '<form class="qz-st" data-i="' + Q.length + '" novalidate><h3>Куди надіслати прорахунок?</h3><div class="qz-f">' +
+    h += '<form class="qz-st" data-i="' + Q.length + '" novalidate><h3>Як з вами зв\'язатися?</h3><div class="qz-f">' +
       '<label>Ваше ім\'я<input name="name" autocomplete="name" placeholder="Як до вас звертатися"></label>' +
       '<label>Телефон*<input name="phone" type="tel" autocomplete="tel" placeholder="0__ ___ __ __" required></label>' +
       '<label>Населений пункт<input name="city" placeholder="Місто або село"></label>' +
       '<label>Як зручніше зв\'язатися<select name="via"><option>Дзвінок</option><option>Viber</option><option>Telegram</option></select></label></div>' +
-      '<div class="qz-err" role="alert"></div><div class="qz-nav"><button type="button" class="qz-b qz-back">Назад</button><button class="qz-b qz-go">Отримати прорахунок</button></div></form>' +
-      '<div class="qz-st qz-ok" data-i="done"><div class="ic"><svg viewBox="0 0 24 24"><path d="M5 12.5 10 17l9-10"/></svg></div><h3>Дякуємо! Заявку прийнято</h3><p class="qz-sum" style="color:var(--q-mut,var(--mut));line-height:1.6"></p><p>Якщо терміново — телефонуйте: <a data-tel href="tel:' + PHONE + '" style="color:var(--acc);font-weight:700">' + PHONE_TXT + '</a></p></div>';
+      '<div class="qz-err" role="alert"></div><div class="qz-nav"><button type="button" class="qz-b qz-back">Назад</button><button class="qz-b qz-go">Отримати прорахунок</button></div><p class="qz-pp">Надсилаючи заявку, ви погоджуєтеся з <a href="' + (location.pathname.indexOf('/svitla/') > -1 ? '../' : '') + 'privacy/" target="_blank">політикою конфіденційності</a>.</p></form>' +
+      '<div class="qz-st qz-ok" data-i="done"><div class="ic"><svg viewBox="0 0 24 24"><path d="M5 12.5 10 17l9-10"/></svg></div><h3>Дякуємо! Заявку прийнято</h3><p class="qz-sum" style="color:var(--q-mut,var(--mut));line-height:1.6"></p><a class="qz-tg" target="_blank" rel="noopener" href="https://t.me/+380935951954" hidden>Надіслати заявку в Telegram</a><p class="qz-tgn" hidden style="font-size:13px;color:var(--mut)">Текст заявки вже скопійовано — просто вставте його в чат.</p><p>Якщо терміново — телефонуйте: <a data-tel href="tel:' + PHONE + '" style="color:var(--acc);font-weight:700">' + PHONE_TXT + '</a></p></div>';
     host.innerHTML = h;
     var sts = $$('.qz-st', host), bar = $('.qz-bar i', host), sl = $('.qz-s', host);
     function go(n) { step = n; sts.forEach(function (s) { s.classList.toggle('on', s.dataset.i == n); }); bar.style.width = (Math.min(n, N) / N * 100) + '%'; sl.textContent = n === 'done' ? 'Готово' : 'Крок ' + (n + 1) + ' з ' + N; if (n === 'done') bar.style.width = '100%'; }
@@ -400,8 +410,9 @@
       if (ph.length < 10) { $('.qz-err', host).textContent = 'Вкажіть, будь ласка, номер телефону — ми передзвонимо.'; f.phone.focus(); return; }
       $('.qz-err', host).textContent = '';
       var d = { name: f.name.value, phone: f.phone.value, city: f.city.value, via: f.via.value }; Object.keys(A).forEach(function (k) { d[k] = A[k]; });
-      send(d);
-      $('.qz-sum', host).textContent = [d.service, d.state, d.size, d.when].filter(Boolean).join(' · ') + '. Зв\'яжемося з вами (' + d.via.toLowerCase() + ') на номер ' + d.phone + ' і домовимося про безкоштовний замір.';
+      var r = send(d);
+      if (!r.auto) { $('.qz-ok h3', host).textContent = 'Останній крок — надішліть заявку'; $('.qz-tg', host).hidden = false; $('.qz-tgn', host).hidden = false; try { navigator.clipboard.writeText(r.text); } catch (_) {} $('.qz-tg', host).href = 'https://t.me/+380935951954'; }
+      $('.qz-sum', host).textContent = [d.service, d.when].filter(Boolean).join(' · ') + '. Зв\'яжемося з вами (' + d.via.toLowerCase() + ') на номер ' + d.phone + ' і домовимося про безкоштовний замір.';
       go('done'); f.reset();
     });
     host._pick = function (p) { A.service = p.cat === 'facade' ? 'Фасади' : (p.cat === 'fence' ? 'Паркани та навіси' : 'Покрівля'); A.material = p.name; go(1); };

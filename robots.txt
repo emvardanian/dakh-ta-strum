@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+Disallow: /svitla/
+Sitemap: https://emvardanian.github.io/dakh-ta-strum/sitemap.xml

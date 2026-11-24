@@ -1,4 +1,4 @@
-/* Дах та струм — раунд 4: заставка, 3 шапки з професійних фото, одометр, довіра, каталог-список, 3 анімації робіт. */
+/* ROOF & VOLT — раунд 4: заставка, 3 шапки з професійних фото, одометр, довіра, каталог-список, 3 анімації робіт. */
 (function () {
   'use strict';
   var $ = function (s, r) { return (r || document).querySelector(s); };
@@ -13,15 +13,15 @@
 
   /* ---------- заставка ---------- */
   function preloader() {
-    var pre = $('#pre'), n = pre && $('.pre-n b', pre), t0 = performance.now(), MIN = reduce ? 0 : 1700, loaded = false;
+    var pre = $('#pre'), n = pre && $('.pre-n b', pre), t0 = performance.now(), MIN = reduce ? 0 : 450, loaded = false;
     function go() { html.classList.add('ready'); }
     if (!pre) { go(); return; }
-    addEventListener('load', function () { loaded = true; }); setTimeout(function () { loaded = true; }, 4500);
+    addEventListener('load', function () { loaded = true; }); setTimeout(function () { loaded = true; }, 450);
     (function step(now) {
       var el = now - t0, p = Math.min(loaded ? 100 : 90, el / MIN * 100);
       n.textContent = Math.floor(p);
       if (p < 100) requestAnimationFrame(step);
-      else { pre.classList.add('go'); setTimeout(go, 350); setTimeout(function () { pre.remove(); }, 1500); }
+      else { pre.classList.add('go'); setTimeout(go, 120); setTimeout(function () { pre.remove(); }, 800); }
     })(t0);
   }
 
@@ -146,9 +146,7 @@
         list.innerHTML = '';
         if (!G.cats.length) {
           list.innerHTML = '<div class="elx"><div class="ex-t"><small>Електрика</small><h3>Електромонтаж під ключ</h3><p>Матеріали для електрики підбираємо під ваш будинок і проєкт — тому тут немає каталогу. Розкажіть, що потрібно, і ми прорахуємо роботу разом із матеріалами.</p><ul class="subl">' + EL.map(function (x, i) { return '<li style="--d:' + i * 90 + 'ms"><i></i>' + x + '</li>'; }).join('') + '</ul><a class="btn btn-a" href="#zayavka" data-quiz-pick="Електрика">Прорахувати електрику</a></div>' +
-            '<div class="ex-v"><svg class="wire" viewBox="0 0 400 520" preserveAspectRatio="none" aria-hidden="true"><path class="w0" d="M0 70 C120 70 110 250 210 250 S320 430 400 440"/><path class="w1" d="M0 70 C120 70 110 250 210 250 S320 430 400 440"/></svg>' +
-            '<figure class="e1"><img src="' + BASE + 'el/e2.webp" alt="Монтаж електрощитка з автоматикою"></figure><figure class="e2"><img src="' + BASE + 'el/e1.webp" alt="Кабель, лампи та інструменти для електромонтажу"></figure>' +
-            '<span class="bolt"><svg viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></span></div></div>';
+            '<div class="ex-v"><svg class="panel" viewBox="0 0 400 470" aria-hidden="true"><rect x="60" y="30" width="280" height="410" rx="20" class="pb"/><rect x="72" y="156" width="256" height="9" rx="2" class="rail"/><g class="brk" style="--k:0"><rect x="86" y="112" width="33" height="92" rx="5" class="bb"/><circle cx="102.5" cy="126" r="4" class="led"/><rect x="96" y="146" width="13" height="30" rx="3" class="slot"/><rect x="96.5" y="160" width="12" height="15" rx="2.5" class="tog"/></g><path class="wr" style="--k:0;stroke:#c4622d" d="M102.5 112 C102.5 70 165.0 60 165.0 0"/><g class="brk" style="--k:1"><rect x="125" y="112" width="33" height="92" rx="5" class="bb"/><circle cx="141.5" cy="126" r="4" class="led"/><rect x="135" y="146" width="13" height="30" rx="3" class="slot"/><rect x="135.5" y="160" width="12" height="15" rx="2.5" class="tog"/></g><path class="wr" style="--k:1;stroke:#2f6fd6" d="M141.5 112 C141.5 70 179.0 60 179.0 0"/><g class="brk" style="--k:2"><rect x="164" y="112" width="33" height="92" rx="5" class="bb"/><circle cx="180.5" cy="126" r="4" class="led"/><rect x="174" y="146" width="13" height="30" rx="3" class="slot"/><rect x="174.5" y="160" width="12" height="15" rx="2.5" class="tog"/></g><path class="wr" style="--k:2;stroke:#d9b23a" d="M180.5 112 C180.5 70 193.0 60 193.0 0"/><g class="brk" style="--k:3"><rect x="203" y="112" width="33" height="92" rx="5" class="bb"/><circle cx="219.5" cy="126" r="4" class="led"/><rect x="213" y="146" width="13" height="30" rx="3" class="slot"/><rect x="213.5" y="160" width="12" height="15" rx="2.5" class="tog"/></g><path class="wr" style="--k:3;stroke:#c4622d" d="M219.5 112 C219.5 70 207.0 60 207.0 0"/><g class="brk" style="--k:4"><rect x="242" y="112" width="33" height="92" rx="5" class="bb"/><circle cx="258.5" cy="126" r="4" class="led"/><rect x="252" y="146" width="13" height="30" rx="3" class="slot"/><rect x="252.5" y="160" width="12" height="15" rx="2.5" class="tog"/></g><path class="wr" style="--k:4;stroke:#2f6fd6" d="M258.5 112 C258.5 70 221.0 60 221.0 0"/><g class="brk" style="--k:5"><rect x="281" y="112" width="33" height="92" rx="5" class="bb"/><circle cx="297.5" cy="126" r="4" class="led"/><rect x="291" y="146" width="13" height="30" rx="3" class="slot"/><rect x="291.5" y="160" width="12" height="15" rx="2.5" class="tog"/></g><path class="wr" style="--k:5;stroke:#8fa0b3" d="M297.5 112 C297.5 70 235.0 60 235.0 0"/><rect x="112" y="262" width="176" height="74" rx="12" class="disp"/><text x="200" y="309" class="dt" text-anchor="middle">230 V</text><text x="200" y="384" class="lab" text-anchor="middle">ЕЛЕКТРОЩИТОК</text><path class="spk" d="M200 336 V 440"/></svg><span class="bolt"><svg viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></span></div></div>';
           requestAnimationFrame(function () { requestAnimationFrame(function () { var e = $('.elx', list); if (e) e.classList.add('on'); }); });
           return;
         }
@@ -372,7 +370,7 @@
     var h = $('[data-hero]'); if (h) ({ kino: heroKino, kolazh: heroKolazh, dim: heroDim })[h.dataset.hero](h);
     odometers(); catalog();
     var w = $('[data-wmode]'); if (w) worksGrid(w, w.dataset.wmode);
-    swipes(); cursor(); preloader();
+    swipes(); preloader();
     var mq = $('#mq'); if (mq) { var words = ['Покрівля', 'Утеплення', 'Підшива', 'Водостік', 'Фасади', 'Навіси', 'Паркани', 'Електромонтаж']; var r = words.map(function (x, i) { return '<span class="' + (i % 2 ? 'o' : '') + '">' + x + '</span>'; }).join(''); mq.innerHTML = r + r; }
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
