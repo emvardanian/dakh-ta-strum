@@ -371,6 +371,9 @@
     odometers(); catalog();
     var w = $('[data-wmode]'); if (w) worksGrid(w, w.dataset.wmode);
     swipes(); preloader();
+    /* плаваюча кнопка дзвінка — з'являється, коли шапку прокручено */
+    var fab = $('.fab'), hero = $('.hero');
+    if (fab && hero) { var fu = function () { fab.classList.toggle('on', scrollY > hero.offsetHeight * .7); }; addEventListener('scroll', fu, { passive: true }); fu(); }
     var mq = $('#mq'); if (mq) { var words = ['Покрівля', 'Утеплення', 'Підшива', 'Водостік', 'Фасади', 'Навіси', 'Паркани', 'Електромонтаж']; var r = words.map(function (x, i) { return '<span class="' + (i % 2 ? 'o' : '') + '">' + x + '</span>'; }).join(''); mq.innerHTML = r + r; }
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();

@@ -854,3 +854,32 @@ html:not([data-theme=light]) .panel .bb{fill:#dfe3ea}
 .lmore:hover,.gmore:hover{background:var(--acc)!important;color:#111!important;border-color:var(--acc)!important}
 .lmore span,.gmore span{transition:transform .35s var(--ease)}.lmore:hover span,.gmore:hover span{transform:translateY(3px)}
 @media(min-width:601px){.gmore{width:auto;margin:26px auto 0;padding:0 34px}}
+
+/* =========== телефон: легший перший екран =========== */
+.mbar{display:none!important}
+.fab{position:fixed;right:16px;bottom:18px;z-index:120;width:58px;height:58px;border-radius:50%;background:var(--acc);display:grid;place-items:center;box-shadow:0 12px 28px -8px rgba(255,122,26,.6);transform:scale(0);transition:transform .45s cubic-bezier(.34,1.56,.64,1)}
+.fab svg{width:24px;height:24px;fill:#111}
+.fab.on{transform:scale(1)}
+.fab::after{content:"";position:absolute;inset:0;border-radius:50%;border:2px solid var(--acc);animation:fabp 2.4s ease-out infinite;opacity:0}
+@keyframes fabp{0%{transform:scale(1);opacity:.7}100%{transform:scale(1.6);opacity:0}}
+@media(min-width:821px){.fab{display:none}}
+@media(max-width:820px){
+ .nav .wrap{height:58px}
+ .nav .tel{display:none}
+ .nav:not(.solid){background:linear-gradient(180deg,rgba(10,12,16,.55),rgba(10,12,16,0))}
+ .logo svg.lg{width:40px;height:25px}
+ .burger{width:40px;height:40px;border-radius:10px}
+}
+@media(max-width:600px){
+ .hero{padding:84px 0 40px;min-height:88svh}
+ .hero .tag{font-size:9.5px;letter-spacing:.1em}
+ .hero h1{font-size:clamp(30px,8.6vw,36px)}
+ .hero p.sub{font-size:15px;line-height:1.55;margin-top:14px}
+ .hero .acts{flex-direction:row;align-items:center;gap:18px;margin-top:22px}
+ .hero .acts .btn{width:auto;flex:none;min-height:48px;padding:0 22px;font-size:14px}
+ .hero .acts .btn-line{border:0;padding:0;min-height:auto;color:#fff;text-decoration:underline;text-underline-offset:4px;background:none}
+ .hero .acts .btn-line::before{display:none}
+ .dots{display:none}
+ footer{padding-bottom:30px}
+}
+@media(max-width:600px){.mini .btn{width:auto;min-height:48px;padding:0 22px;font-size:14px}.cta .acts{flex-direction:row;flex-wrap:wrap}.cta .acts .btn{width:auto}}
