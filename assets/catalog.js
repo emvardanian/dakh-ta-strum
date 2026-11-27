@@ -1685,8 +1685,8 @@ window.CATALOG=[
   ],
   "adv": [],
   "specs": [],
-  "colors": {},
-  "items": [],
+   "colors": {"В наявності на складі": ["RAL 7016", "RAL 8017", "RAL 8019", "RAL 9005"], "Під замовлення": ["RAL 3005", "RAL 6020", "RAL 7024", "RAL 8004", "RAL 9010", "Цинк", "Алюцинк"]},
+   "items": ["Лійка", "Ринва", "Заглушка ринви", "Труба", "Зовнішній кут", "Коліно", "Трійник", "Внутрішній кут", "Муфта труби", "Гак торцевий", "З’єднувач ринви", "Хомут труби"],
   "img": "assets/p/forostina.webp"
  },
  {
@@ -1781,4 +1781,4 @@ window.CATALOG=[
   "img": "assets/p/siding-parts.webp"
  }
 ];
-window.swatch=function(n){var m=n.match(/RAL (\d+)/);if(m&&RAL[m[1]])return RAL[m[1]];if(/Білий дуб/.test(n))return'linear-gradient(135deg,#e2d3bb,#c9b593)';if(/Золотий дуб/.test(n))return'linear-gradient(135deg,#c48a48,#8e5a28)';if(/Темний дуб/.test(n))return'linear-gradient(135deg,#6b452c,#3b2516)';if(/Алюмо/.test(n))return'linear-gradient(135deg,#d9dcde,#a9adb0)';if(/Цинк/.test(n))return'linear-gradient(135deg,#c8cccf,#8f9498)';return'#888'};
+window.swatch=function(n){var m=n.match(/RAL (\d+)/);if(m&&RAL[m[1]])return RAL[m[1]];if(/Білий дуб/.test(n))return'linear-gradient(135deg,#e2d3bb,#c9b593)';if(/Золотий дуб/.test(n))return'linear-gradient(135deg,#c48a48,#8e5a28)';if(/Темний дуб/.test(n))return'linear-gradient(135deg,#6b452c,#3b2516)';if(/Алюмо/.test(n))return'linear-gradient(135deg,#d9dcde,#a9adb0)';if(/цинк/i.test(n))return'linear-gradient(135deg,#c8cccf,#8f9498)';return'#888'};
