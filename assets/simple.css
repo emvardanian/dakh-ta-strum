@@ -251,3 +251,8 @@ h1{font-size:clamp(26px,2.4vw,34px)}
 .logo{min-height:44px}
 .big-tel{min-height:44px;line-height:44px}
 .srv .lnk{display:inline-flex;align-items:center;min-height:44px}
+/* схеми / креслення профілю */
+.sch{display:grid;gap:10px;margin:6px 0 4px}
+.sch figure{margin:0;background:#fff;border:1px solid #e3e3e3;border-radius:8px;padding:8px}
+.sch img{display:block;width:100%;height:auto}
+.sch figcaption{font-size:13px;margin-top:4px}

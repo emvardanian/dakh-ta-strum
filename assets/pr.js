@@ -174,6 +174,8 @@
       if (p.specs.length) h += '<h4>Технічні характеристики</h4><div class="tbl">' + p.specs.map(function (s) { return '<div><span>' + esc(s[0]) + '</span><b>' + esc(s[1]) + '</b></div>'; }).join('') + '</div>';
       var g = Object.keys(p.colors), k = 0;
       if (g.length) h += '<h4>Палітра — натисніть, щоб приміряти</h4>' + g.map(function (gr) { return '<div class="grp">' + esc(gr) + '</div><div class="ral">' + p.colors[gr].map(function (c) { return '<button style="background:' + swatch(c) + ';animation-delay:' + (k++) * 25 + 'ms" data-n="' + esc(gr + ' · ' + c) + '" data-c="' + esc(c) + '" aria-label="' + esc(gr + ': ' + c) + '"></button>'; }).join('') + '</div>'; }).join('') + '<div class="rn">Оберіть колір</div>';
+      var SC = window.SCHEME && SCHEME[p.id];
+      if (SC) h += '<h4>' + esc(SC.t) + '</h4><div class="sch">' + SC.s.map(function (x) { return '<figure><a href="' + BASE + x[0] + '" target="_blank" rel="noopener"><img src="' + BASE + x[0] + '" alt="' + esc(p.name + (x[1] ? ' — ' + x[1] : '') + ': ' + SC.t) + '" loading="lazy"></a>' + (x[1] ? '<figcaption>' + esc(x[1]) + '</figcaption>' : '') + '</figure>'; }).join('') + '</div>';
       if (p.adv.length) h += '<h4>Переваги</h4><ol class="adv">' + p.adv.map(function (a) { return '<li>' + esc(a) + '</li>'; }).join('') + '</ol>';
       if (p.items.length) {
         var IM = (window.ITEM_IMG && ITEM_IMG[p.id]) || {};

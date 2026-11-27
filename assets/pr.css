@@ -883,3 +883,8 @@ html:not([data-theme=light]) .panel .bb{fill:#dfe3ea}
  footer{padding-bottom:30px}
 }
 @media(max-width:600px){.mini .btn{width:auto;min-height:48px;padding:0 22px;font-size:14px}.cta .acts{flex-direction:row;flex-wrap:wrap}.cta .acts .btn{width:auto}}
+/* схеми / креслення профілю */
+.drw .sch{display:grid;gap:10px;margin:6px 0 4px}
+.drw .sch figure{margin:0;background:#fff;border-radius:10px;padding:10px;overflow:hidden}
+.drw .sch img{display:block;width:100%;height:auto}
+.drw .sch figcaption{color:#333;font-size:12px;margin-top:6px}

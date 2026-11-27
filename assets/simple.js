@@ -108,6 +108,8 @@
       var h = '<img class="d-img" src="' + BASE + 'p/' + p.id + '.webp" alt="' + esc(p.name) + '">';
       h += '<div class="d-desc">' + p.desc.map(function (d) { return '<p>' + esc(d) + '</p>'; }).join('') + '</div>';
       if (p.specs.length) h += '<h3>Характеристики</h3><div class="tbl">' + p.specs.map(function (s) { return '<span>' + esc(s[0]) + '</span><b>' + esc(s[1]) + '</b>'; }).join('') + '</div>';
+      var SC = window.SCHEME && SCHEME[p.id];
+      if (SC) h += '<h3>' + esc(SC.t) + '</h3><div class="sch">' + SC.s.map(function (x) { return '<figure><img src="' + BASE + x[0] + '" alt="' + esc(p.name + (x[1] ? ' — ' + x[1] : '') + ': ' + SC.t) + '" loading="lazy">' + (x[1] ? '<figcaption>' + esc(x[1]) + '</figcaption>' : '') + '</figure>'; }).join('') + '</div>';
       var gr = Object.keys(p.colors);
       if (gr.length) h += '<h3>Кольори RAL</h3>' + gr.map(function (g) { return '<p class="grp">' + esc(g) + '</p><div class="ral">' + p.colors[g].map(function (c) { return '<button type="button" style="background:' + swatch(c) + '" aria-pressed="false" data-n="' + esc(g + ' · ' + c) + '" aria-label="' + esc(g + ': ' + c) + '"></button>'; }).join('') + '</div>'; }).join('') + '<p class="ral-n" aria-live="polite">Натисніть на колір, щоб побачити назву</p>';
       if (p.items.length) {
