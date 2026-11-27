@@ -284,7 +284,7 @@
   function openLb(w, i) {
     if (!lb) buildLb(); lbW = w;
     $('h3', lb).textContent = w.title; $('.lbx-h p', lb).textContent = w.note;
-    $('.lbx-r', lb).innerHTML = w.photos.map(function (p, k) { return '<button aria-label="Фото ' + (k + 1) + '"><img src="' + T(p) + '" alt="" loading="lazy"></button>'; }).join('');
+    $('.lbx-r', lb).innerHTML = w.photos.map(function (p, k) { return '<button aria-label="Фото ' + (k + 1) + '"><img src="' + T(p) + '" alt=""></button>'; }).join('');
     $$('.lbx-r button', lb).forEach(function (b, k) { b.onclick = function () { goLb(k); }; });
     var many = w.photos.length > 1; $('.lbx-p', lb).style.display = $('.lbx-n', lb).style.display = many ? '' : 'none'; $('.lbx-r', lb).style.display = many ? '' : 'none';
     lb.style.gridTemplateColumns = many ? '' : '1fr';
@@ -292,7 +292,17 @@
   }
   function goLb(i) {
     var n = lbW.photos.length; lbI = (i + n) % n; var im = $('.lbx-m img', lb);
-    im.style.opacity = 0; setTimeout(function () { im.src = W(lbW.photos[lbI]); im.alt = lbW.title; im.onload = function () { im.style.opacity = 1; }; }, 150);
+    /* спершу показуємо легку мініатюру, потім підміняємо на велике фото; якщо велике не завантажилось — лишається мініатюра */
+    var my = lbI, big = W(lbW.photos[lbI]), sm = T(lbW.photos[lbI]);
+    im.style.opacity = 0;
+    setTimeout(function () {
+      if (my !== lbI) return;
+      im.onload = im.onerror = null; im.alt = lbW.title; im.src = sm; im.style.opacity = 1;
+      var pre = new Image(); pre.decoding = 'async';
+      pre.onload = function () { if (my === lbI) im.src = big; };
+      pre.onerror = function () { var r = new Image(); r.onload = pre.onload; r.src = big + (big.indexOf('?') < 0 ? '?r=1' : '&r=1'); };
+      pre.src = big;
+    }, 120);
     $('.lbx-c', lb).textContent = ('0' + (lbI + 1)).slice(-2) + ' / ' + ('0' + n).slice(-2);
     $$('.lbx-r button', lb).forEach(function (b, k) { b.classList.toggle('on', k === lbI); if (k === lbI) b.scrollIntoView({ block: 'nearest', inline: 'nearest' }); });
   }

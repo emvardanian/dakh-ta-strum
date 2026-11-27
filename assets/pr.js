@@ -175,13 +175,13 @@
       var g = Object.keys(p.colors), k = 0;
       if (g.length) h += '<h4>Палітра — натисніть, щоб приміряти</h4>' + g.map(function (gr) { return '<div class="grp">' + esc(gr) + '</div><div class="ral">' + p.colors[gr].map(function (c) { return '<button style="background:' + swatch(c) + ';animation-delay:' + (k++) * 25 + 'ms" data-n="' + esc(gr + ' · ' + c) + '" data-c="' + esc(c) + '" aria-label="' + esc(gr + ': ' + c) + '"></button>'; }).join('') + '</div>'; }).join('') + '<div class="rn">Оберіть колір</div>';
       var SC = window.SCHEME && SCHEME[p.id];
-      if (SC) h += '<h4>' + esc(SC.t) + '</h4><div class="sch">' + SC.s.map(function (x) { return '<figure><a href="' + BASE + x[0] + '" target="_blank" rel="noopener"><img src="' + BASE + x[0] + '" alt="' + esc(p.name + (x[1] ? ' — ' + x[1] : '') + ': ' + SC.t) + '" loading="lazy"></a>' + (x[1] ? '<figcaption>' + esc(x[1]) + '</figcaption>' : '') + '</figure>'; }).join('') + '</div>';
+      if (SC) h += '<h4>' + esc(SC.t) + '</h4><div class="sch">' + SC.s.map(function (x) { return '<figure><a href="' + BASE + x[0] + '" target="_blank" rel="noopener"><img src="' + BASE + x[0] + '" alt="' + esc(p.name + (x[1] ? ' — ' + x[1] : '') + ': ' + SC.t) + '" decoding="async"></a>' + (x[1] ? '<figcaption>' + esc(x[1]) + '</figcaption>' : '') + '</figure>'; }).join('') + '</div>';
       if (p.adv.length) h += '<h4>Переваги</h4><ol class="adv">' + p.adv.map(function (a) { return '<li>' + esc(a) + '</li>'; }).join('') + '</ol>';
       if (p.items.length) {
         var IM = (window.ITEM_IMG && ITEM_IMG[p.id]) || {};
         h += '<h4>Елементи</h4><div class="elg">' + p.items.map(function (a, i) {
           var src = IM[a];
-          return '<figure style="animation-delay:' + (i * 40) + 'ms">' + (src ? '<span class="ei"><img src="' + BASE + src + '" alt="' + esc(a) + '" loading="lazy"></span>' : '<span class="ei ei-n"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10"/></svg></span>') + '<figcaption>' + esc(a) + '</figcaption></figure>';
+          return '<figure style="animation-delay:' + (i * 40) + 'ms">' + (src ? '<span class="ei"><img src="' + BASE + src + '" alt="' + esc(a) + '" decoding="async"></span>' : '<span class="ei ei-n"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10"/></svg></span>') + '<figcaption>' + esc(a) + '</figcaption></figure>';
         }).join('') + '</div>';
       }
       h += '<a class="btn btn-a" href="#zayavka">Прорахувати з монтажем <svg class="arr" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 10h13M11 5l5 5-5 5"/></svg></a></div>';

@@ -62,7 +62,7 @@
     function photo(g, i) {
       var n = g.photos.length;
       function html(k) {
-        return '<div class="ph-v"><img src="' + BASE + 'w/' + g.photos[k] + '.webp" alt="' + esc(g.name) + ', фото ' + (k + 1) + '"></div><div class="ph-n"><button type="button" class="btn btn-s" data-d="-1">← Попереднє</button><span>' + (k + 1) + ' з ' + n + '</span><button type="button" class="btn btn-s" data-d="1">Наступне →</button></div>';
+        return '<div class="ph-v" style="background:#eee url(' + BASE + 't/' + g.photos[k] + '.webp) center/contain no-repeat"><img src="' + BASE + 'w/' + g.photos[k] + '.webp" onerror="this.onerror=null;this.src=this.src.replace(\'/w/\',\'/t/\')" alt="' + esc(g.name) + ', фото ' + (k + 1) + '"></div><div class="ph-n"><button type="button" class="btn btn-s" data-d="-1">← Попереднє</button><span>' + (k + 1) + ' з ' + n + '</span><button type="button" class="btn btn-s" data-d="1">Наступне →</button></div>';
       }
       openDlg(g.name, html(i));
       function nav(d) { i = (i + d + n) % n; dlgB.innerHTML = html(i); bind(); }
@@ -109,14 +109,14 @@
       h += '<div class="d-desc">' + p.desc.map(function (d) { return '<p>' + esc(d) + '</p>'; }).join('') + '</div>';
       if (p.specs.length) h += '<h3>Характеристики</h3><div class="tbl">' + p.specs.map(function (s) { return '<span>' + esc(s[0]) + '</span><b>' + esc(s[1]) + '</b>'; }).join('') + '</div>';
       var SC = window.SCHEME && SCHEME[p.id];
-      if (SC) h += '<h3>' + esc(SC.t) + '</h3><div class="sch">' + SC.s.map(function (x) { return '<figure><img src="' + BASE + x[0] + '" alt="' + esc(p.name + (x[1] ? ' — ' + x[1] : '') + ': ' + SC.t) + '" loading="lazy">' + (x[1] ? '<figcaption>' + esc(x[1]) + '</figcaption>' : '') + '</figure>'; }).join('') + '</div>';
+      if (SC) h += '<h3>' + esc(SC.t) + '</h3><div class="sch">' + SC.s.map(function (x) { return '<figure><img src="' + BASE + x[0] + '" alt="' + esc(p.name + (x[1] ? ' — ' + x[1] : '') + ': ' + SC.t) + '" decoding="async">' + (x[1] ? '<figcaption>' + esc(x[1]) + '</figcaption>' : '') + '</figure>'; }).join('') + '</div>';
       var gr = Object.keys(p.colors);
       if (gr.length) h += '<h3>Кольори RAL</h3>' + gr.map(function (g) { return '<p class="grp">' + esc(g) + '</p><div class="ral">' + p.colors[g].map(function (c) { return '<button type="button" style="background:' + swatch(c) + '" aria-pressed="false" data-n="' + esc(g + ' · ' + c) + '" aria-label="' + esc(g + ': ' + c) + '"></button>'; }).join('') + '</div>'; }).join('') + '<p class="ral-n" aria-live="polite">Натисніть на колір, щоб побачити назву</p>';
       if (p.items.length) {
         var IM = (window.ITEM_IMG && ITEM_IMG[p.id]) || {};
         h += '<h3>Елементи</h3><div class="elg">' + p.items.map(function (a) {
           var s = IM[a];
-          return '<figure>' + (s ? '<span class="ei"><img src="' + BASE + s + '" alt="' + esc(a) + '" loading="lazy"></span>' : '<span class="ei ei-n"></span>') + '<figcaption>' + esc(a) + '</figcaption></figure>';
+          return '<figure>' + (s ? '<span class="ei"><img src="' + BASE + s + '" alt="' + esc(a) + '" decoding="async"></span>' : '<span class="ei ei-n"></span>') + '<figcaption>' + esc(a) + '</figcaption></figure>';
         }).join('') + '</div>';
       }
       if (p.adv.length) h += '<h3>Переваги</h3><ul class="adv">' + p.adv.map(function (a) { return '<li>' + esc(a) + '</li>'; }).join('') + '</ul>';
